@@ -6,27 +6,70 @@
 #define CreatNode(p) p=(Book *)malloc(sizeof(Book));
 #define DeleteNode(p) free(p);
 
+
+Book *library_initial(){
+	Book *h=malloc(sizeof(Book));
+	if(NULL==h){
+		printf("malloc library fail.");
+		return NUll;
+	}
+	h->next=NUll;
+	return h;
+}
+
 Book *AddBook(Book *h, Book *a){  //CREAT
 	Book *q;
-	if(a->next==NULL){
-		CreatNode(a);
+	CreatNode(q);
+	if(h->next==NULL){
 		a=h->next;
+		a->next=NUll;
 		return a;
 	}
-	else{
-		CreatNode(a);
-		CreatNode(q);
-		q=h->next;
-		a=h->next;
-		a->next=q;
-		free(q);
-		return a;
+	q=h->next;
+	while(1){
+		if(q->next!=NULL){
+			q=q->next;
+		}
+		else{
+			break;
+		}
 	}
+	q->next=a;
+	free(q);
+	return a;
 }
 
 void DeleteBook(Book *h, Book *d){
-	h->next=d->next;
-	free(d);
+	Book *q;
+	CreatNode(q);
+	if(h->next==Null){
+		printf("\nBook list has not been loaded yet.\n");
+		exist(0);
+	}
+	else{
+		q=h->next;
+	}
+	while(1){
+		if(q->id==d->id){
+			q->next=d->next;
+			free(d);
+			while(1){
+				if(q->next!=NULL){
+					q=q->next;
+					q->id--;
+				}
+				else{
+					break;
+				}
+			}
+			break;
+		}
+		else{
+			q=q->next;
+		}
+	}
+	free(q);
+	
 }
 
 Book *ChooseBook(Book *h, int j){
