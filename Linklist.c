@@ -82,3 +82,31 @@ Book *ChooseBook(Book *h, int j){
 	}
 	return q;
 }
+
+int check_username(User *uh, char username[16]){
+	User *p, *q;
+	p=uh->next;
+		while(p->username!=username){
+			if(p->next==NULL){
+				return -1;
+			}
+			q=p->next;
+			p=q;
+		}
+	return p->Id;
+}
+
+int check_password(User *uh, char password[16]){
+	User *p, *q;
+	p=uh->next;
+		while(p->password!=password){
+			if(p->next==NULL){
+				return -1;
+			}
+			q=p->next;
+			p=q;
+		}
+	return p->type;
+}
+
+
