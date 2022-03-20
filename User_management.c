@@ -36,6 +36,7 @@ int user_login(User *uh){
 	int tl, id, type;
 	str=(char*)malloc(100*sizeof(char));  
 	while(1){
+		printf("Login:\n");
 		printf("username:");
 		fgets(str,16,stdin);
 		fflush(stdin);
