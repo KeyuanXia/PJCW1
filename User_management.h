@@ -1,12 +1,9 @@
-<<<<<<< HEAD
 #ifndef __USERMANAGEMENT_H__
 #define __USERMANAGEMENT_H__
 
 #include"Linklist.h"
 
 
-=======
->>>>>>> d66d14c9459d8da730645a6b733f3ed98c753595
 typedef struct _User{
 	int Id;
 	char *username;
@@ -15,7 +12,6 @@ typedef struct _User{
 	struct _User *last;
 	struct _User *next;
 }User;
-<<<<<<< HEAD
 
 int initial_userlist(User *h);
 
@@ -36,5 +32,3 @@ int librarianCLI();
 int userCLI();
 
 #endif
-=======
->>>>>>> d66d14c9459d8da730645a6b733f3ed98c753595
