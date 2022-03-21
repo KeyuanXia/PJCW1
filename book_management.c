@@ -3,9 +3,7 @@
 
 #include"book_management.h"
 
-int load_books(Book *bh, char file[]){
-	FILE *fr=NULL;
-	fr=fopen(file, "rb");
+int load_books(Book *bh, FILE *fr){
 	if (fr==NULL){
 		perror("Didn't find the library file, please check the library name.\n");
 		return -1;
@@ -16,7 +14,7 @@ int load_books(Book *bh, char file[]){
 	bh=q;
 	while(q!=NULL){
 		p=(Book *)malloc(sizeof(Book));
-		if(fread(&p, sizeof(Book), 1, fr)==NULL){
+		if(fread(p, sizeof(Book), 1, fr)==NULL){
 			break;
 		}
 		i++;

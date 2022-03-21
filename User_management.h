@@ -19,7 +19,7 @@ int user_login(User *uh);
 
 int check_usernam(User *uh, char *str);
 
-int check_password(User *uh, char str, int id);
+int check_password(User *uh, char *str, int id);
 
 int user_register_datain(User *uh, char *username, char *password);
 

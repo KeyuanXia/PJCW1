@@ -7,65 +7,71 @@
 #include"utility.h"
 
 int initial_userlist(User *h){
-	h=(User *)malloc(sizeof(User));
-	User *q=(User *)malloc(sizeof(User));
-	User *p;
-	FILE *fr=fopen("Userlist.txt","rb");
-	if(fr==NULL){
-		perror("\n!!!Lose the Userdata, the initial of userdata failed.!!!\n");
-		return -1;
-	}
-	q=h;
-	while(q!=NULL){
-		p=(User *)malloc(sizeof(User));
-		if(fread(&p, sizeof(User), 1, fr)==NULL){
-			break;
-		}
-		q->next=p;
-		p->last=q;
-		q=p;
+	h->Id=0;
+	
+	FILE *fr=fopen("Userlist.txt","r");
+	switch(load_user_data(fr, h)){
+		case -1:perror("\n!!!Lose the Userdata, the initial of userdata failed.!!!\n");return -1;
+		case 0:printf("\n!!!User list is NULL, the initial of user data failed!!!\n");return 0;
+		default:break;
 	}
 	fclose(fr);
+	
 	printf("\n\n***Userdata insert sucessfully!***\n\n"); 
+	return 1;
 }
 
 int user_login(User *uh){
 	User *p; 
 	User *q;
-	char * str;  
+	char *str;  
 	int tl, id, type;
 	str=(char*)malloc(100*sizeof(char));  
 	while(1){
-		
-		printf("username:");
-		fgets(str,16,stdin);
+		printf("Login:\n"); 
+		printf("username(less than 16 characters):");
+		fgets(str,91,stdin);
+		clear_n(str);
 		fflush(stdin);
 		tl = strlen(str);
-		if(tl>=90){
+		if(tl>=16){
 			printf("\n!Your username is too long!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
+			continue;
 		}
-		else if(strcmpi(str, "quit")){
+		else if(strcmpi(str, "quit")==0){
 			return 0;
 		}
+		else if(tl==0){
+			printf("\n!Your username cannot be empty!\n");
+			continue;
+		}
+		
 		id = check_usernam(uh,str);
+		
 		if(id==-1){
 			printf("\n!The username has not been created before, please check your username.!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
+		else{
+			break;
+		}
 	}
 	while(1){
 		printf("password:");
+		fgets(str,20,stdin);
+		clear_n(str);
+		fflush(stdin);
 		tl = strlen(str);
-		if(tl>=90){
+		if(tl>=16){
 			printf("\n!Your password is too long!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
-		else if(strcmpi(str, "quit")){
+		else if(strcmpi(str, "quit")==0){
 			return 0;
 		}
-		type = check_password(uh, *str, id);
-		if(type==0){
+		type = check_password(uh, str, id);
+		if(type==-1){
 			printf("\n!Wrong password!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
@@ -79,44 +85,41 @@ int user_login(User *uh){
 }
 
 int check_usernam(User *uh, char *str){
-	User *p; 
+	
 	User *q;
 	q=uh;
-	p=q->next;
 	while(1){
-		if(p==NULL){
+		printf("\n\n***In the username check***\n\n");
+		if(!q){
 			return -1;
 		}
-		else if(strcmp(p->username, str)==0){
-			return p->Id;
+		if(strcmp(q->username, str)==0){	
+			return q->Id;
 		}
-		q=p;
-		p=q->next;
+		q=q->next;
+		
 	}
 }
 
 int check_password(User *uh, char *str, int id){
-	User *p; 
 	User *q;
 	q=uh;
-	p=q->next;
 	while(1){
-		if(id==p->Id){
+		if(id==q->Id){
 			break;
 		}
-		q=p;
-		p=q->next;
+		q=q->next;
 	}
-	if(strcmp(str,p->password)==0){
-		if(p->type==1){
+	if(strcmp(str,q->password)==0){
+		if(q->type==1){
 			return 1;
 		}
-		else if(p->type==2){
+		else if(q->type==2){
 			return 2;
 		}
 	}
 	else{
-		return 0;
+		return -1;
 	}
 
 }
@@ -131,20 +134,17 @@ int user_register_datain(User *uh, char *username, char *password){
 			p=(User*)malloc(sizeof(User));
 			q->next=p;
 			p->Id=q->Id+1;
-			p->username=username;
-			p->password=password;
+			p->username=strdup(username);
+			p->password=strdup(password);
 			p->last=q;
 			p->type=2;
+			p->next=0;
 			break;
 		}
 		q=q->next;
 	}
-	FILE *fr=fopen("Userlist.txt","wb");
-	q=uh->next;
-	while(q!=NULL){
-		fwrite(&q, sizeof(User), 1, fr);
-		q=q->next;
-	}
+	FILE *fr=fopen("Userlist.txt","w");
+	store_user_data(fr, uh);
 	fclose(fr);
 	printf("\n***user register successfully!***\n");
 	return 1;
@@ -156,27 +156,38 @@ int user_register(User *uh){
 	typein_username=(char*)malloc(100*sizeof(char));  
 	typein_password=(char*)malloc(100*sizeof(char));
 	while(1){
-	printf("username:");
-	fgets(typein_username,16,stdin);
-	fflush(stdin);
-	tl=get_length(typein_username);
-	if(tl>=16){
-			printf("\n!Your username is too long!\n");
-			printf("Please try again or enter 'quit' to back to the login and register page.\n");
+		memset(typein_username, 0, sizeof(typein_username));
+		printf("Register\n");
+		printf("\tusername:");
+		fgets(typein_username,20,stdin);
+		clear_n(typein_username);
+		fflush(stdin);
+		tl=strlen(typein_username);
+		if(tl>=16){
+				printf("\n!Your username is too long!\n");
+				printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
-		else if(strcmpi(typein_username, "quit")){
+		else if(strcmpi(typein_username, "quit")==0){
 			return 0;
+		}
+		else if(check_usernam(uh, typein_username)!=-1){
+			printf("The username is already exist, please choose another.\n");
+		}
+		else{
+			break;
 		}
 	}
 	while(1){
 		printf("password:");
-		scanf("%s", &typein_password);
+		fgets(typein_password,16,stdin);
+		clear_n(typein_password);
+		fflush(stdin);
 		tl=strlen(typein_password);
 		if(tl>=90){
 			printf("\n!Your password is too long!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
-		else if(strcmpi(typein_password, "quit")){
+		else if(strcmpi(typein_password, "quit")==0){
 			return 0;
 		}
 		else{
@@ -186,16 +197,25 @@ int user_register(User *uh){
 }
 
 int librarianCLI(){
-	
+	printf("\nin librarian\n");
+	return 0;
 }
 
 int userCLI(){
+	printf("\nin user\n");
+	return 0;
 	
 }
 
 int login_or_register(User *uh){
-	if(initial_userlist(uh)==-1){
+	int i;
+	i= initial_userlist(uh);
+	if(i==-1){
 		return -1;
+	}
+	else if(i==0){
+		first_register(uh);
+		initial_userlist(uh);
 	}
 	int j;
 	char *str=NULL;
@@ -205,6 +225,7 @@ int login_or_register(User *uh){
 		printf("1) Login\n");
 		printf("2) Register an account\n");
 		printf("3) Quit\n");
+		printf("4) List users\n");
 		printf("choice:");
 		fgets(str,10,stdin);
 		fflush(stdin);
@@ -230,6 +251,9 @@ int login_or_register(User *uh){
 			}
 			else if(strcmp(str,"3\n")==0){	///Quit
 				return -1;
+			}
+			else if(strcmp(str,"4\n")==0){
+				list_users(uh);
 			}
 			else{
 				printf("\ninvalid choose.\n");
