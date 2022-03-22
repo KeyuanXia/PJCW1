@@ -28,7 +28,6 @@ int store_user_data(FILE *fr, User *uh){
 }
 
 int load_user_data(FILE *fr, User *uh){
-	
 	if (fr==NULL){
 		return -1;
 	}
@@ -63,77 +62,69 @@ int load_user_data(FILE *fr, User *uh){
 	return i;
 }
 
-
-
-int first_register(User *uh){
-
-	char *typein_username, *typein_password; 
+int user_register_datain(User *uh, char *username, char *password){
 	User *q;
-	q=(User *)malloc(sizeof(User));
-	int tl;
-	typein_username=(char*)malloc(100*sizeof(char));
-	typein_password=(char*)malloc(100*sizeof(char));
-	printf("please register the first user account, this user will be Librarian.\n\n");
+	User *p;
+	q=uh;
 	while(1){
-		memset(typein_username, 0, sizeof(typein_username));
-		printf("First_Register:\n");
-		printf("username:");
-		fgets(typein_username,16,stdin);
-		fflush(stdin);
-		tl=get_length(typein_username);
-		if(tl>=16){
-				printf("\n!Your username is too long!\n");
-				printf("Please try again or enter 'quit' to back to the login and register page.\n");
-		}
-		else if(strcmpi(typein_username, "quit")==0){
-			return 0;
-		}
-		else if(tl==0){
-			printf("\nThe username can not be none.\n");
-			printf("Please try again or enter 'quit' to back to the login and register page.\n");
-		}
-		else{
+		if(q->next==NULL){
+			p=(User*)malloc(sizeof(User));
+			q->next=p;
+			p->Id=q->Id+1;
+			p->username=strdup(username);
+			p->password=strdup(password);
+			p->last=q;
+			p->type=2;
+			p->next=0;
 			break;
 		}
+		q=q->next;
 	}
+	FILE *fr=fopen("Userlist.txt","w");
+	store_user_data(fr, uh);
+	fclose(fr);
+	printf("\n***user register successfully!***\n");
+	return 1;
+}
+
+int check_usernam(User *uh, char *str){
+	
+	User *q;
+	q=uh;
 	while(1){
-		printf("password:");
-		fgets(typein_password,16,stdin);
-		fflush(stdin);
-		tl=strlen(typein_password);
-		if(tl>=16){
-			printf("\n!Your password is too long!\n");
-			printf("Please try again or enter 'quit' to back to the login and register page.\n");
+		if(!q){
+			return -1;
 		}
-		else if(strcmpi(typein_password, "quit")==0){
-			return 0;
+		if(strcmp(q->username, str)==0){	
+			return q->Id;
 		}
-		else if(tl==0){
-			printf("\nThe password can not be none.\n");
-			printf("Please try again or enter 'quit' to back to the login and register page.\n");
-		}
-		else{
-				
-				
-				q->type=1;
-				q->last=uh;
-				q->next=0;
-				q->Id=1;
-				
-				q->username=typein_username;
-				q->password=typein_password;
-				printf("\n***\n");
-				uh->next=q;
-				FILE *fr=fopen("Userlist.txt","w");
-				store_user_data(fr, uh);
-				fclose(fr);
-				printf("\n***first user register successfully!***\n");
-				return 1;
-		}
+		q=q->next;
+		
 	}
 }
 
+int check_password(User *uh, char *str, int id){
+	User *q;
+	q=uh;
+	while(1){
+		if(id==q->Id){
+			break;
+		}
+		q=q->next;
+	}
+	if(strcmp(str,q->password)==0){
+		if(q->type==1){
+			return 1;
+		}
+		else if(q->type==2){
+			return 2;
+		}
+	}
+	else{
+		return -1;
+	}
 
+}
 
 int list_users(User *uh){
 	User *q;

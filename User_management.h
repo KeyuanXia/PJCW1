@@ -15,13 +15,9 @@ typedef struct _User{
 
 int initial_userlist(User *h);
 
+int first_register(User *uh);
+
 int user_login(User *uh);
-
-int check_usernam(User *uh, char *str);
-
-int check_password(User *uh, char *str, int id);
-
-int user_register_datain(User *uh, char *username, char *password);
 
 int user_register(User *uh);
 
