@@ -3,20 +3,21 @@
 
 #include"book_management.h"
 #include"User_management.h" 
+#include"librarian.h"
 int main(){
-	int usertype;
+	User *user;
 	User *uh=(User *)malloc(sizeof(User));
-	Book *bh;
-	BookList *blh;
+	Book *bh=(Book *)malloc(sizeof(Book));
 	while(1){
-		usertype=login_or_register(uh);
-		if(usertype==1){
-			librarianCLI();
+		user=login_or_register(uh);
+		if(user->type==1){
+			librarianCLI(user, bh);
 		}
-		else if(usertype==2){
+		else if(user->type==2){
 			userCLI();
 		}
-		else if(usertype==-1){
+		else if(user->type==-1){
+			printf("\n\nquit\n\n");
 			return 0;
 		}
 	}

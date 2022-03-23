@@ -22,8 +22,19 @@ int store_user_data(FILE *fr, User *uh){
 	q=uh->next;
 	
 	while(q!=0){
-		fprintf(fr, "%i ;%s ;%s ;%i\n", q->Id, q->username, q->password, q->type);
+		fprintf(fr, "%i\n", q->Id);
+		fputs(q->username,fr);fprintf(fr,"\n");
+		fputs(q->password,fr);fprintf(fr,"\n");
+		fprintf(fr, "%i\n", q->type);
 		q=q->next;
+	}
+}
+
+void clear_n(char *str){
+	char *tmp = NULL;
+	if ((tmp = strstr(str, "\n")))
+	{
+	     *tmp = '\0';
 	}
 }
 
@@ -44,11 +55,17 @@ int load_user_data(FILE *fr, User *uh){
 		}
 		p=(User *)malloc(sizeof(User));
 		
-		if(fscanf(fr, "%i ;%s ;%s ;%i\n", &p->Id, username, password, &p->type)<=0){
+		if(fscanf(fr, "%i\n", &p->Id)<=0){
 			break;
 		}
+		fgets(username, 20, fr);
+		fgets(password, 20, fr);
+		fscanf(fr, "%i\n", &p->type);
+		clear_n(username);
+		clear_n(password);
 		p->username=strdup(username);
 		p->password=strdup(password);
+		
 		i++;
 		q->next=p;
 		p->last=q;
@@ -87,36 +104,27 @@ int user_register_datain(User *uh, char *username, char *password){
 	return 1;
 }
 
-int check_usernam(User *uh, char *str){
-	
-	User *q;
+User *check_usernam(User *uh, char *str){
+	User *q, *p=(User *)malloc(sizeof(User));
 	q=uh;
 	while(1){
 		if(!q){
-			return -1;
+			p->type=-1; 
+			return p;
 		}
 		if(strcmp(q->username, str)==0){	
-			return q->Id;
+			return q;
 		}
 		q=q->next;
-		
 	}
 }
 
-int check_password(User *uh, char *str, int id){
-	User *q;
-	q=uh;
-	while(1){
-		if(id==q->Id){
-			break;
-		}
-		q=q->next;
-	}
-	if(strcmp(str,q->password)==0){
-		if(q->type==1){
+int check_passwor(User *user, char *str){
+	if(strcmp(str,user->password)==0){
+		if(user->type==1){
 			return 1;
 		}
-		else if(q->type==2){
+		else if(user->type==2){
 			return 2;
 		}
 	}
@@ -144,10 +152,4 @@ int list_users(User *uh){
 	}
 }
 
-void clear_n(char *str){
-	char *tmp = NULL;
-	if ((tmp = strstr(str, "\n")))
-	{
-	     *tmp = '\0';
-	}
-}
+

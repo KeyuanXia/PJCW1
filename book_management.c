@@ -3,16 +3,21 @@
 #include<string.h>
 
 #include"book_management.h"
+#include"utility.h"
 
 int store_books(Book *bh, FILE *file){
 	if (file==NULL){
-		perror("\nDidn't find the bookfile.\n");
+		perror("\nDidn't find the booklist.\n");
 		return -1;
 	}
 	Book *q;
 	q=bh->next;
 	while(q!=0){
-		fprintf(file, "%i ;%s ;%s ;%i ;%i\n", q->id, q->title, q->authors, q->year, q->copies);
+		fprintf(file, "%i\n", q->id);
+		fputs(q->title,file);fprintf(file,"\n");
+		fputs(q->authors,file);fprintf(file,"\n");
+		fprintf(file, "%i\n", q->year);
+		fprintf(file, "%i\n", q->copies);
 		q=q->next;
 	}
 }
@@ -24,7 +29,7 @@ int load_books(Book *bh, FILE *file){
 	}
 	char *title, *author; 
 	title=(char*)malloc(100*sizeof(char));  
-	author=(char*)malloc(100*sizeof(char));
+	author=(char*)malloc(120*sizeof(char));
 	int i=0;
 	Book *q=(Book *)malloc(sizeof(Book));
 	Book *p;
@@ -35,9 +40,15 @@ int load_books(Book *bh, FILE *file){
 		}
 		p=(Book *)malloc(sizeof(Book));
 		
-		if(fscanf(file, "%i ;%s ;%s ;%i ;%i\n", &q->id, title, author, &q->year, &q->copies)<=0){
+		if(fscanf(file, "%i\n", &p->id)<=0){
 			break;
 		}
+		fgets(title, 101, file);
+		fgets(author, 101, file);
+		fscanf(file, "%i\n", &p->year);
+		fscanf(file, "%i\n", &p->copies);
+		clear_n(title);
+		clear_n(author);
 		p->title=strdup(title);
 		p->authors=strdup(author);
 		i++;
@@ -88,6 +99,86 @@ int remove_book(Book *bh, Book book){
 	}
 }
 
+BookList find_book_by_title (Book *bh, const char *title){
+	Book *q, *p;
+	BookList *blh;
+	blh=(BookList *)malloc(sizeof(BookList));
+	p=blh->list;
+	blh->length=0;
+	q=bh;
+	while(1){
+		if(!q){
+			if(blh->length==0){
+				printf("Didn't find book with title: '%s'", title);
+				return *blh;
+			}
+			else{
+				return *blh;
+			}
+		}
+		if(strcmp(q->title, title)==0){	
+			p->next=q;
+			p=p->next;
+			blh->length++;
+		}
+		q=q->next;
+	}
+}
 
+BookList find_book_by_author (Book *bh, const char *author){ //when add authors, remenber to add "h,"at first, or strtok won't work well.
+	Book *q, *p;
+	BookList *blh;
+	char *t; 
+	blh=(BookList *)malloc(sizeof(BookList));
+	p=blh->list;
+	blh->length=0;
+	q=bh;
+	while(1){
+		if(!q){
+			if(blh->length==0){
+				printf("Didn't find book with author: '%s'", author);
+				return *blh;
+			}
+			else{
+				return *blh;
+			}
+		}
+		t=strtok(q->authors, ",");
+		while(t){
+			t=strtok(NULL, ",");
+			if(strcmp(t, author)==0){	
+				p->next=q;
+				p=p->next;
+				blh->length++;
+				break;
+			}
+		}
+		q=q->next;
+	}
+}
 
-
+BookList find_book_by_year (Book *bh, unsigned int year){
+	Book *q, *p;
+	BookList *blh;
+	blh=(BookList *)malloc(sizeof(BookList));
+	p=blh->list;
+	blh->length=0;
+	q=bh;
+	while(1){
+		if(!q){
+			if(blh->length==0){
+				printf("Didn't find book published at '%i'", year);
+				return *blh;
+			}
+			else{
+				return *blh;
+			}
+		}
+		if(q->year==year){	
+			p->next=q;
+			p=p->next;
+			blh->length++;
+		}
+		q=q->next;
+	}
+}
