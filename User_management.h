@@ -22,8 +22,4 @@ int user_register(User *uh);
 
 User *login_or_register(User *uh);
 
-int librarianCLI();
-
-int userCLI();
-
 #endif

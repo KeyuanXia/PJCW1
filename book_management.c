@@ -18,13 +18,14 @@ int store_books(Book *bh, FILE *file){
 		fputs(q->authors,file);fprintf(file,"\n");
 		fprintf(file, "%i\n", q->year);
 		fprintf(file, "%i\n", q->copies);
+		fprintf(file, "%i\n", q->totalcopies);
 		q=q->next;
 	}
 }
 
 int load_books(Book *bh, FILE *file){
 	if (file==NULL){
-		perror("\nDidn't find the bookfile.\n");
+		printf("\nThe book list is empty.\n");
 		return -1;
 	}
 	char *title, *author; 
@@ -47,6 +48,7 @@ int load_books(Book *bh, FILE *file){
 		fgets(author, 101, file);
 		fscanf(file, "%i\n", &p->year);
 		fscanf(file, "%i\n", &p->copies);
+		fscanf(file, "%i\n", &p->totalcopies);
 		clear_n(title);
 		clear_n(author);
 		p->title=strdup(title);
@@ -68,10 +70,13 @@ int add_book(Book *bh, Book book){
 	Book *q, *p;
 	q=bh;
 	while(1){
-		if(q->next==0){
+		if(q->next==NULL){
+			p=(Book *)malloc(sizeof(Book));
 			p=&book;
+			p->id=q->id+1;
 			q->next=p;
 			p->last=q;
+			p->next=NULL;
 			return 0;
 		}
 		q=q->next;
@@ -132,11 +137,11 @@ BookList find_book_by_author (Book *bh, const char *author){ //when add authors,
 	blh=(BookList *)malloc(sizeof(BookList));
 	p=blh->list;
 	blh->length=0;
-	q=bh;
+	q=bh->next;
 	while(1){
 		if(!q){
 			if(blh->length==0){
-				printf("Didn't find book with author: '%s'", author);
+				printf("\nDidn't find book with author: '%s'\n", author);
 				return *blh;
 			}
 			else{
@@ -163,11 +168,12 @@ BookList find_book_by_year (Book *bh, unsigned int year){
 	blh=(BookList *)malloc(sizeof(BookList));
 	p=blh->list;
 	blh->length=0;
-	q=bh;
+	q=bh->next;
 	while(1){
 		if(!q){
 			if(blh->length==0){
-				printf("Didn't find book published at '%i'", year);
+				printf("\nDidn't find book published at %i\n", year);
+				
 				return *blh;
 			}
 			else{
@@ -179,6 +185,25 @@ BookList find_book_by_year (Book *bh, unsigned int year){
 			p=p->next;
 			blh->length++;
 		}
+		q=q->next;
+	}
+}
+
+int list_books(Book *bh){
+	Book *q;
+	q=bh->next;
+	printf("\nid\ttitle\t\t\tcopies\t\tYear\tauthors\n");
+	if(!bh->next){
+		return -1;
+	}
+	while(q){
+		printf("%i\t%s", q->id, q->title);
+		if(strlen(q->title)<8)
+			printf("\t\t\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
+		else if(strlen(q->title)>=8||strlen(q->title)<16)
+			printf("\t\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
+		else if(strlen(q->title)>=16)
+			printf("\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
 		q=q->next;
 	}
 }

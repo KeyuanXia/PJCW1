@@ -1,17 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<direct.h>
+#include<io.h>
+#include <sys/stat.h>
 
 #include"User_management.h"
-int get_length(char str[]){
-	char *p = str;
-	int count = 0;
-	while (*p++ != '\n')
-	{
-		count++;
-	}
-	return count;
-}
+#include"book_management.h"
 
 int store_user_data(FILE *fr, User *uh){
 	if (fr==NULL){
@@ -152,4 +147,62 @@ int list_users(User *uh){
 	}
 }
 
+int CreateFolder(const char *folderName){
+    if (_access(folderName, 0) == -1){
+        _mkdir(folderName);
+        return 1;
+    }
+    else{
+    	return 0;
+	}
+}
 
+int Check_Folder(const char *folderName){
+	if (_access(folderName, 0) == -1){
+        return 0;
+    }
+    else{
+    	return 1;
+	}
+}
+
+int check_length_booklist(Book *bh){
+	Book *q;
+	q=bh;
+	int count = 0;
+	while (q->next)
+	{
+		count++;
+		q=q->next;
+	}
+	return count;
+	
+}
+
+int copy_booklist(BookList *to, BookList from){
+	int i;
+	Book *q, *p;
+	if(from.length==0){
+		to->length=0;
+		return -1;
+	}
+	to->length=from.length;
+	to->list=from.list;
+	q=to->list->next;
+	p=from.list->next;
+	for(i=0;i<to->length;i++){
+		q->id=p->id;
+		q->title=strdup(p->title);
+		q->authors=strdup(p->authors);
+		q->copies=p->copies;
+		q->totalcopies=p->totalcopies;
+		q->year=p->year;
+	}
+}
+
+int isnum(char *s){
+    int i;
+    for(i=0;i<strlen(s);i++){
+        if(s[i]<'0'||s[i]>'9'){return 0;}}
+    return 1;
+}

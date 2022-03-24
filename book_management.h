@@ -16,6 +16,7 @@ typedef struct _Book {
 		char *authors; //comma separated list of authors
 		unsigned int year; // year of publication
 		unsigned int copies; //number of copies the library has
+		unsigned int totalcopies;//the initial number of copies the library has
 		struct _Book *last;
 		struct _Book *next; //pointer to the next book element
 }Book;
@@ -25,9 +26,6 @@ typedef struct _BookList {
 	 unsigned int length; // number of elements in the (Book*) List 
 }BookList;
 
-
-
-int create_library(Book *bh, FILE *file);
 
 //saves the database of books in the specified file
 //returns 0 if books were stored correctly, or an error code otherwise
@@ -63,6 +61,14 @@ BookList find_book_by_author (Book *bh, const char *author);
 //provided title can be found. The length of the list is also recorded in the returned structure, with 0 in case
 //list is the NULL pointer.
 BookList find_book_by_year (Book *bh, unsigned int year);
+
+//create a new booklist named by the librarian
+int create_library(Book *bh, FILE *file);
+
+int list_books(Book *bh);
+
+//including the interface of add books
+
 
 
 #endif

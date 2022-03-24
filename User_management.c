@@ -1,15 +1,16 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<io.h>
 
 #include"User_management.h" 
 #include"utility.h"
 
 int initial_userlist(User *h){
 	h->Id=0;
-	FILE *fr=fopen("./Userdata/Userlist.txt","r");
+	FILE *fr=fopen("Userdata/Userlist.txt","r");
 	switch(load_user_data(fr, h)){
-		case -1:perror("\n!!!Lose the Userdata, the initial of userdata failed.!!!\n");return -1;
+		case -1:printf("\n!!!Lose the Userdata, the initial of userdata failed.!!!\n");return 0;
 		case 0:printf("\n!!!User list is NULL, the initial of user data failed!!!\n");return 0;
 		default:break;
 	}
@@ -19,7 +20,7 @@ int initial_userlist(User *h){
 }
 
 int first_register(User *uh){
-	char *typein_username, *typein_password; 
+	char *typein_username, *typein_password, *f; 
 	User *q;
 	q=(User *)malloc(sizeof(User));
 	int tl;
@@ -28,8 +29,8 @@ int first_register(User *uh){
 	printf("please register the first user account, this user will be Librarian.\n\n");
 	while(1){
 		memset(typein_username, 0, sizeof(typein_username));
-		printf("First_Register:\n");
-		printf("username:");
+		printf("First_Register\n");
+		printf("\tusername(less than 16 characters):");
 		fgets(typein_username,20,stdin);
 		clear_n(typein_username);
 		fflush(stdin);
@@ -50,7 +51,7 @@ int first_register(User *uh){
 		}
 	}
 	while(1){
-		printf("password:");
+		printf("\tpassword(less than 16 characters):");
 		fgets(typein_password,20,stdin);
 		clear_n(typein_password);
 		fflush(stdin);
@@ -67,8 +68,6 @@ int first_register(User *uh){
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
 		else{
-				
-				
 				q->type=1;
 				q->last=uh;
 				q->next=0;
@@ -78,6 +77,9 @@ int first_register(User *uh){
 				q->password=typein_password;
 				
 				uh->next=q;
+				if(access("./Userdata", 0)==-1){
+					CreateFolder("Userdata");
+				}
 				FILE *fr=fopen("./Userdata/Userlist.txt","w");
 				store_user_data(fr, uh);
 				fclose(fr);
@@ -189,16 +191,6 @@ int user_register(User *uh){
 			return 1; 
 		}
 	}
-}
-
-int librarianCLI(){
-	printf("\nIn librarian\n");
-	return 0;
-}
-
-int userCLI(){
-	printf("\nIn user\n");
-	return 0;
 }
 
 User *login_or_register(User *uh){
