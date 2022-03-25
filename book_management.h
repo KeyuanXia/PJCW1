@@ -27,6 +27,8 @@ typedef struct _BookList {
 }BookList;
 
 
+int initial_booklist(Book *bh, char *filename);
+
 //saves the database of books in the specified file
 //returns 0 if books were stored correctly, or an error code otherwise
 int store_books(Book *bh, FILE *file);
@@ -65,10 +67,7 @@ BookList find_book_by_year (Book *bh, unsigned int year);
 //create a new booklist named by the librarian
 int create_library(Book *bh, FILE *file);
 
-int list_books(Book *bh);
-
-//including the interface of add books
-
+int list_books(Book *bh, int length);
 
 
 #endif

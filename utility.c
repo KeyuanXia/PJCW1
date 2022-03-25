@@ -8,6 +8,30 @@
 #include"User_management.h"
 #include"book_management.h"
 
+char *strdpp(const char *s){
+    size_t size = strlen(s) + 1;
+    char *p = (char *)malloc(size*sizeof(char));
+    if (p) {
+        memcpy(p, s, size);
+    }
+    return p;
+}
+
+int check_numlen(int a){
+	int i;
+	for(i=0;a>1;i++){
+		a=a/10;
+	}
+	return i;
+}
+
+void CreateFolder(const char *folderName){
+    if (_access(folderName, 0) == -1)
+    {
+        _mkdir(folderName);
+    }
+}
+
 int store_user_data(FILE *fr, User *uh){
 	if (fr==NULL){
 		return -1;
@@ -58,8 +82,8 @@ int load_user_data(FILE *fr, User *uh){
 		fscanf(fr, "%i\n", &p->type);
 		clear_n(username);
 		clear_n(password);
-		p->username=strdup(username);
-		p->password=strdup(password);
+		p->username=strdpp(username);
+		p->password=strdpp(password);
 		
 		i++;
 		q->next=p;
@@ -69,8 +93,8 @@ int load_user_data(FILE *fr, User *uh){
 	if(uh->next==0){
 		return 0;
 	}
-	q->next=0; 
-	uh->last=0;
+	q->next=NULL; 
+	uh->last=NULL;
 	return i;
 }
 
@@ -83,8 +107,8 @@ int user_register_datain(User *uh, char *username, char *password){
 			p=(User*)malloc(sizeof(User));
 			q->next=p;
 			p->Id=q->Id+1;
-			p->username=strdup(username);
-			p->password=strdup(password);
+			p->username=strdpp(username);
+			p->password=strdpp(password);
 			p->last=q;
 			p->type=2;
 			p->next=0;
@@ -147,25 +171,6 @@ int list_users(User *uh){
 	}
 }
 
-int CreateFolder(const char *folderName){
-    if (_access(folderName, 0) == -1){
-        _mkdir(folderName);
-        return 1;
-    }
-    else{
-    	return 0;
-	}
-}
-
-int Check_Folder(const char *folderName){
-	if (_access(folderName, 0) == -1){
-        return 0;
-    }
-    else{
-    	return 1;
-	}
-}
-
 int check_length_booklist(Book *bh){
 	Book *q;
 	q=bh;
@@ -192,8 +197,8 @@ int copy_booklist(BookList *to, BookList from){
 	p=from.list->next;
 	for(i=0;i<to->length;i++){
 		q->id=p->id;
-		q->title=strdup(p->title);
-		q->authors=strdup(p->authors);
+		q->title=strdpp(p->title);
+		q->authors=strdpp(p->authors);
 		q->copies=p->copies;
 		q->totalcopies=p->totalcopies;
 		q->year=p->year;

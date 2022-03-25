@@ -5,14 +5,27 @@
 #include"book_management.h"
 #include"utility.h"
 
+int initial_booklist(Book *bh, char *filename){
+	bh->id=0;
+	FILE *fr=fopen(filename,"r");
+	switch(load_books(bh, fr)){
+		case -1:printf("\n!!!Didn't find the booklist.!!!\n");return -1;
+		case 0:printf("\n!!!Book list is NULL!!!\n");return 0;
+		default:break;
+	}
+	fclose(fr);
+	printf("\n***Booklist insert sucessfully!***\n");
+	return 1;
+}
+
 int store_books(Book *bh, FILE *file){
 	if (file==NULL){
-		perror("\nDidn't find the booklist.\n");
 		return -1;
 	}
 	Book *q;
 	q=bh->next;
 	while(q!=0){
+		
 		fprintf(file, "%i\n", q->id);
 		fputs(q->title,file);fprintf(file,"\n");
 		fputs(q->authors,file);fprintf(file,"\n");
@@ -25,14 +38,13 @@ int store_books(Book *bh, FILE *file){
 
 int load_books(Book *bh, FILE *file){
 	if (file==NULL){
-		printf("\nThe book list is empty.\n");
 		return -1;
 	}
 	char *title, *author; 
 	title=(char*)malloc(100*sizeof(char));  
 	author=(char*)malloc(120*sizeof(char));
 	int i=0;
-	Book *q=(Book *)malloc(sizeof(Book));
+	Book *q;
 	Book *p;
 	q=bh;
 	while(1){
@@ -51,8 +63,8 @@ int load_books(Book *bh, FILE *file){
 		fscanf(file, "%i\n", &p->totalcopies);
 		clear_n(title);
 		clear_n(author);
-		p->title=strdup(title);
-		p->authors=strdup(author);
+		p->title=strdpp(title);
+		p->authors=strdpp(author);
 		i++;
 		q->next=p;
 		p->last=q;
@@ -61,8 +73,8 @@ int load_books(Book *bh, FILE *file){
 	if(bh->next==0){
 		return 0;
 	}
-	q->next=0; 
-	bh->last=0;
+	q->next=NULL; 
+	bh->last=NULL;
 	return i;
 }
 
@@ -72,7 +84,11 @@ int add_book(Book *bh, Book book){
 	while(1){
 		if(q->next==NULL){
 			p=(Book *)malloc(sizeof(Book));
-			p=&book;
+			p->copies=book.copies;
+			p->totalcopies=book.totalcopies;
+			p->year=book.year;
+			p->title=strdpp(book.title);
+			p->authors=strdpp(book.authors); 
 			p->id=q->id+1;
 			q->next=p;
 			p->last=q;
@@ -86,7 +102,7 @@ int add_book(Book *bh, Book book){
 int remove_book(Book *bh, Book book){
 	Book *q, *p;
 	q=bh;
-	while(1){
+	while(q){
 		if(q->id==book.id){
 			if(q->next){
 				p=q->next;
@@ -96,12 +112,14 @@ int remove_book(Book *bh, Book book){
 				return 0;
 			}
 			else{
+				q->last->next=NULL;
 				free(q);
 				return 0;
 			}
 		}
 		q=q->next;
 	}
+	return -1;
 }
 
 BookList find_book_by_title (Book *bh, const char *title){
@@ -131,10 +149,11 @@ BookList find_book_by_title (Book *bh, const char *title){
 }
 
 BookList find_book_by_author (Book *bh, const char *author){ //when add authors, remenber to add "h,"at first, or strtok won't work well.
-	Book *q, *p;
+	Book *q, *p, *temp;
 	BookList *blh;
 	char *t; 
 	blh=(BookList *)malloc(sizeof(BookList));
+	temp=(Book *)malloc(sizeof(Book));
 	p=blh->list;
 	blh->length=0;
 	q=bh->next;
@@ -148,16 +167,20 @@ BookList find_book_by_author (Book *bh, const char *author){ //when add authors,
 				return *blh;
 			}
 		}
-		t=strtok(q->authors, ",");
-		while(t){
-			t=strtok(NULL, ",");
+		temp->authors=strdpp(q->authors);
+		t=strtok(temp->authors, ",");
+		while(t!=NULL){
+			
 			if(strcmp(t, author)==0){	
 				p->next=q;
 				p=p->next;
 				blh->length++;
 				break;
 			}
+			
+			t=strtok(NULL, ",");
 		}
+		
 		q=q->next;
 	}
 }
@@ -189,21 +212,32 @@ BookList find_book_by_year (Book *bh, unsigned int year){
 	}
 }
 
-int list_books(Book *bh){
+int list_books(Book *bh, int length){
 	Book *q;
+	int i=0;
 	q=bh->next;
 	printf("\nid\ttitle\t\t\tcopies\t\tYear\tauthors\n");
 	if(!bh->next){
 		return -1;
 	}
 	while(q){
+		if(i==length){
+			break;
+		}
 		printf("%i\t%s", q->id, q->title);
 		if(strlen(q->title)<8)
-			printf("\t\t\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
+			printf("\t\t\t%i/%i",q->copies, q->totalcopies);
 		else if(strlen(q->title)>=8||strlen(q->title)<16)
-			printf("\t\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
+			printf("\t\t%i/%i",q->copies, q->totalcopies);
 		else if(strlen(q->title)>=16)
-			printf("\t%i/%i\t%i\t%s\n",q->copies, q->totalcopies, q->year, q->authors);
+			printf("\t%i/%i",q->copies, q->totalcopies);
+			
+		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<=3)
+			printf("\t\t%i\t%s\n",q->year, q->authors);
+		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>3||(check_numlen(q->copies)+check_numlen(q->totalcopies))<=7)
+			printf("\t%i\t%s\n",q->year, q->authors);
+		
 		q=q->next;
+		i++;
 	}
 }

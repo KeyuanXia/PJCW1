@@ -4,7 +4,9 @@
 #include"User_management.h"
 #include"book_management.h"
 
-int get_length(char str[]);
+char *strdpp(const char *s);
+
+int check_numlen(int a);
 
 int store_user_data(FILE *fr, User *uh);
 
@@ -21,8 +23,6 @@ int check_passwor(User *user, char *str);
 int list_users(User *uh);
 
 int CreateFolder(const char *folderName);
-
-int Check_Folder(const char *folderName);
 
 int check_length_booklist(Book *bh);
 
