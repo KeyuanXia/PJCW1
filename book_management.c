@@ -122,8 +122,8 @@ int remove_book(Book *bh, Book book){
 	return -1;
 }
 
-BookList find_book_by_title (Book *bh, const char *title){
-	Book *q, *p;
+BookList *find_book_by_title (Book *bh, const char *title){
+	Book *q, *p, *temp;
 	BookList *blh;
 	blh=(BookList *)malloc(sizeof(BookList));
 	p=blh->list;
@@ -133,23 +133,28 @@ BookList find_book_by_title (Book *bh, const char *title){
 		if(!q){
 			if(blh->length==0){
 				printf("Didn't find book with title: '%s'", title);
-				return *blh;
+				return blh;
 			}
 			else{
-				return *blh;
+				
+				return blh;
 			}
 		}
-		if(strcmp(q->title, title)==0){	
-			p->next=q;
+		if(strcmp(q->title, title)==0){
+			temp=(Book *)malloc(sizeof(Book));
+			copy_book(temp, q);
+			
+			p->next=temp;
 			p=p->next;
 			blh->length++;
 		}
+		
 		q=q->next;
 	}
 }
 
-BookList find_book_by_author (Book *bh, const char *author){ //when add authors, remenber to add "h,"at first, or strtok won't work well.
-	Book *q, *p, *temp;
+BookList *find_book_by_author (Book *bh, const char *author){ 
+	Book *q, *p, *temp2, *temp;
 	BookList *blh;
 	char *t; 
 	blh=(BookList *)malloc(sizeof(BookList));
@@ -161,18 +166,21 @@ BookList find_book_by_author (Book *bh, const char *author){ //when add authors,
 		if(!q){
 			if(blh->length==0){
 				printf("\nDidn't find book with author: '%s'\n", author);
-				return *blh;
+				return blh;
 			}
 			else{
-				return *blh;
+				
+				return blh;
 			}
 		}
 		temp->authors=strdpp(q->authors);
 		t=strtok(temp->authors, ",");
 		while(t!=NULL){
 			
-			if(strcmp(t, author)==0){	
-				p->next=q;
+			if(strcmp(t, author)==0){
+				temp2=(Book *)malloc(sizeof(Book));
+				copy_book(temp2, q);
+				p->next=temp2;
 				p=p->next;
 				blh->length++;
 				break;
@@ -185,8 +193,8 @@ BookList find_book_by_author (Book *bh, const char *author){ //when add authors,
 	}
 }
 
-BookList find_book_by_year (Book *bh, unsigned int year){
-	Book *q, *p;
+BookList *find_book_by_year (Book *bh, unsigned int year){
+	Book *q, *p, *temp;
 	BookList *blh;
 	blh=(BookList *)malloc(sizeof(BookList));
 	p=blh->list;
@@ -197,14 +205,16 @@ BookList find_book_by_year (Book *bh, unsigned int year){
 			if(blh->length==0){
 				printf("\nDidn't find book published at %i\n", year);
 				
-				return *blh;
+				return blh;
 			}
 			else{
-				return *blh;
+				return blh;
 			}
 		}
-		if(q->year==year){	
-			p->next=q;
+		if(q->year==year){
+			temp=(Book *)malloc(sizeof(Book));
+			copy_book(temp, q);
+			p->next=temp;
 			p=p->next;
 			blh->length++;
 		}
@@ -215,11 +225,13 @@ BookList find_book_by_year (Book *bh, unsigned int year){
 int list_books(Book *bh, int length){
 	Book *q;
 	int i=0;
-	q=bh->next;
-	printf("\nid\ttitle\t\t\tcopies\t\tYear\tauthors\n");
+	
+	
 	if(!bh->next){
 		return -1;
 	}
+	printf("\nid\ttitle\t\t\tcopies\t\tYear\tauthors\n");
+	q=bh->next;
 	while(q){
 		if(i==length){
 			break;
@@ -227,14 +239,14 @@ int list_books(Book *bh, int length){
 		printf("%i\t%s", q->id, q->title);
 		if(strlen(q->title)<8)
 			printf("\t\t\t%i/%i",q->copies, q->totalcopies);
-		else if(strlen(q->title)>=8||strlen(q->title)<16)
+		else if(strlen(q->title)>=8&&strlen(q->title)<16)
 			printf("\t\t%i/%i",q->copies, q->totalcopies);
 		else if(strlen(q->title)>=16)
 			printf("\t%i/%i",q->copies, q->totalcopies);
 			
-		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<=3)
+		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<=7)
 			printf("\t\t%i\t%s\n",q->year, q->authors);
-		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>3||(check_numlen(q->copies)+check_numlen(q->totalcopies))<=7)
+		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>7||(check_numlen(q->copies)+check_numlen(q->totalcopies))<=15)
 			printf("\t%i\t%s\n",q->year, q->authors);
 		
 		q=q->next;

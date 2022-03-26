@@ -184,17 +184,17 @@ int check_length_booklist(Book *bh){
 	
 }
 
-int copy_booklist(BookList *to, BookList from){
+int copy_booklist(BookList *to, BookList *from){
 	int i;
 	Book *q, *p;
-	if(from.length==0){
+	if(from->length==0){
 		to->length=0;
 		return -1;
 	}
-	to->length=from.length;
-	to->list=from.list;
+	to->length=from->length;
+	to->list=from->list;
 	q=to->list->next;
-	p=from.list->next;
+	p=from->list->next;
 	for(i=0;i<to->length;i++){
 		q->id=p->id;
 		q->title=strdpp(p->title);
@@ -203,6 +203,21 @@ int copy_booklist(BookList *to, BookList from){
 		q->totalcopies=p->totalcopies;
 		q->year=p->year;
 	}
+}
+
+int copy_book(Book *to, Book *from){
+	int i;
+	
+	to->id=from->id;
+	
+	to->title=strdpp(from->title);
+	
+	to->authors=strdpp(from->authors);
+	to->copies=from->copies;
+	
+	to->totalcopies=from->totalcopies;
+	to->year=from->year;
+	
 }
 
 int isnum(char *s){

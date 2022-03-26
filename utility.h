@@ -28,6 +28,8 @@ int check_length_booklist(Book *bh);
 
 int copy_booklist(BookList *to, BookList from);
 
+int copy_book(Book *to, Book *from);
+
 int isnum(char *s);
 
 #endif

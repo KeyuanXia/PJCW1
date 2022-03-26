@@ -144,7 +144,7 @@ int create_booklist_file(char *fileName){
 
 int find_author(Book *bh){
 	char *str=(char*)malloc(100*sizeof(char));
-	BookList *bl=(BookList *)malloc(sizeof(BookList));
+	BookList *bl;
 	while(1){
 		printf("Author:");
 		fgets(str,91,stdin);
@@ -160,7 +160,7 @@ int find_author(Book *bh){
 			return -1;
 		}
 		else{
-			copy_booklist(bl, find_book_by_author(bh, str));
+			bl=find_book_by_author(bh, str);
 			if(bl->length!=0){
 				list_books(bl->list, bl->length);
 				return 1;
@@ -175,7 +175,7 @@ int find_author(Book *bh){
 
 int find_title(Book *bh){
 	char *str=(char*)malloc(100*sizeof(char));
-	BookList *bl=(BookList *)malloc(sizeof(BookList));
+	BookList *bl;
 	while(1){
 		printf("booktitle:");
 		fgets(str,91,stdin);
@@ -191,9 +191,13 @@ int find_title(Book *bh){
 			return -1;
 		}
 		else{
-			copy_booklist(bl, find_book_by_title(bh, str));
+			
+			bl=find_book_by_title(bh, str);
+			
 			if(bl->length!=0){
+				
 				list_books(bl->list, bl->length);
+				
 				return 1;
 			}
 			else{
@@ -206,7 +210,7 @@ int find_title(Book *bh){
 
 int find_year(Book *bh){
 	char *str=(char*)malloc(100*sizeof(char));
-	BookList *bl=(BookList *)malloc(sizeof(BookList));
+	BookList *bl;
 	int year;
 	while(1){
 		printf("Publish year:");
@@ -227,7 +231,7 @@ int find_year(Book *bh){
 		}
 		else{
 			year = atoi(str);
-			copy_booklist(bl, find_book_by_year(bh, year));
+			bl=find_book_by_year(bh, year);
 			
 			
 			
@@ -288,7 +292,6 @@ int book_remove(Book *bh){
 	while(1){
 		list_books(bh, -1);
 		printf("\nPlease choose an book ID:");
-		printf("Publish year:");
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
@@ -357,7 +360,7 @@ int librarianCLI(User *user, Book *bh, User *uh, char *filename){
 				booklist_add(bh, filename);
 			}
 			else if(strcmp(str,"5")==0){
-				
+				book_remove(bh);
 			}
 			else if(strcmp(str,"6")==0){
 				return 0;
