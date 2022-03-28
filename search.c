@@ -116,9 +116,7 @@ int find_year(Book *bh){
 }
 
 int search_book(Book *bh){
-	
 	char str[10];
-	
 	while(1){
 		if(bh->next==NULL){
 			return -1;

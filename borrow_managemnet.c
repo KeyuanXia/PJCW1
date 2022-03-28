@@ -45,27 +45,33 @@ int add_borrow_book(Book *bh, Book choosen_book, BookList *ubh){
 	Book *q, *p, *i;
 	q=bh->next;
 	i=ubh->list;
-	while(q){
-		while(i->next!=NULL){
+	while(1){
+		if(i->next==NULL){
+			q=bh->next;
+			while(1){
+				if(!q){
+					return -1;
+				}
+				else if(q->id==choosen_book.id){
+					q->copies--;
+					p=(Book *)malloc(sizeof(Book));
+					p->copies=1;
+					p->totalcopies=1;
+					p->year=q->year;
+					p->title=strdpp(q->title);
+					p->authors=strdpp(q->authors); 
+					p->id=q->id;
+					i->next=p;
+					p->last=i;
+					p->next=NULL;
+					return 0;
+				}
+				q=q->next;
+			}
+		}
+		else
 			i=i->next;
-		}
-		if(q->id==choosen_book.id){
-			q->copies--;
-			p=(Book *)malloc(sizeof(Book));
-			p->copies=choosen_book.copies;
-			p->totalcopies=choosen_book.totalcopies;
-			p->year=choosen_book.year;
-			p->title=strdpp(choosen_book.title);
-			p->authors=strdpp(choosen_book.authors); 
-			p->id=choosen_book.id;
-			i->next=p;
-			p->last=i;
-			p->next=NULL;
-			return 0;
-		}
-		q=q->next;
 	}
-	return -1;
 } 
 
 int choose_available_book(Book *abh, Book *bh, BookList *ubh){
@@ -82,32 +88,52 @@ int choose_available_book(Book *abh, Book *bh, BookList *ubh){
 		q=q->next;
 		book=book->next;
 	}
+	
 	while(u){
-		b.id=u->id;
-		remove_book(abh,b);
+		if(b.id=u->id)
+			remove_book(abh,b);
+		u=u->next;
 	}
 }
 
-int store_user_borrowed(User *user, BookList *ubh, char *filename){
-	ubh->list->id=0;
+int store_user_borrow(User *user, BookList *ubh, char *filename){
 	char *temp=(char *)malloc(100*sizeof(char));
 	char *temp_2=(char *)malloc(100*sizeof(char));
 	strcpy(temp,"./Userdata/");
 	strcpy(temp_2,".txt");
 	strcat(temp,filename);
 	strcat(temp,temp_2);
-	FILE *fr=fopen(temp, "w");
-	if(store_books(ubh->list, fr)==-1)
-		printf("\n!!!Lose the Userdata folder, store user borrowed book failed.!!!\n\n");
+	FILE *fr=fopen(temp,"w");
+	switch(store_books(ubh->list, fr)){
+		case -1:printf("\n!!!Didn't find the user's borrow history, new one is added!!!\n\n");return -1;
+		case 0:return 0;
+		default:break;
+	}
 	fclose(fr);
+	printf("\n***User borrowed books stored sucessfully!***\n");
+	return 1;
 }
 
-int load_borrow_books(Book *ubh, FILE *file){
-	
+int find_book_by_id(Book *abh, unsigned int id){
+	Book *q;
+	int i=0;
+	q=abh->next;
+	while(1){
+		if(!q){
+			if(i==0){
+				return -1;
+			}
+			else{
+				return 1;
+			}
+		}
+		if(q->id==id){
+			if(q->copies==0){
+				return 2;
+			}
+			i++;
+		}
+		q=q->next;
+	}
 }
-
-int store_borrow_books(Book *ubh, FILE *file){
-	
-}
-
 

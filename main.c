@@ -63,7 +63,7 @@ int main(int argc, char **argv){
 		}
 		else if(user->type==2){
 			
-			check=userCLI(user, bh, user->username);
+			check=userCLI(user, bh, user->username, filename);
 		}
 		else if(user->type==-1){
 			printf("\nQuit the library system.\n");

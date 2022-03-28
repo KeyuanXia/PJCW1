@@ -134,7 +134,7 @@ BookList *find_book_by_title (Book *bh, const char *title){
 	blh=(BookList *)malloc(sizeof(BookList));
 	p=blh->list;
 	blh->length=0;
-	q=bh;
+	q=bh->next;
 	while(1){
 		if(!q){
 			if(blh->length==0){
@@ -142,19 +142,16 @@ BookList *find_book_by_title (Book *bh, const char *title){
 				return blh;
 			}
 			else{
-				
 				return blh;
 			}
 		}
 		if(strcmp(q->title, title)==0){
 			temp=(Book *)malloc(sizeof(Book));
 			copy_book(temp, q);
-			
 			p->next=temp;
 			p=p->next;
 			blh->length++;
 		}
-		
 		q=q->next;
 	}
 }
