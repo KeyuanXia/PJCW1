@@ -62,10 +62,11 @@ int main(int argc, char **argv){
 			check=librarianCLI(user, bh, uh, filename);
 		}
 		else if(user->type==2){
-			check=userCLI();
+			
+			check=userCLI(user, bh, user->username);
 		}
 		else if(user->type==-1){
-			printf("\nquit\n");
+			printf("\nQuit the library system.\n");
 			return 0;
 		}
 		if(check==-1){

@@ -8,11 +8,13 @@
 int initial_booklist(Book *bh, char *filename){
 	bh->id=0;
 	FILE *fr=fopen(filename,"r");
+	
 	switch(load_books(bh, fr)){
 		case -1:printf("\n!!!Didn't find the booklist.!!!\n");return -1;
 		case 0:printf("\n!!!Book list is NULL!!!\n");return 0;
 		default:break;
 	}
+	
 	fclose(fr);
 	printf("\n***Booklist insert sucessfully!***\n");
 	return 1;
@@ -25,7 +27,6 @@ int store_books(Book *bh, FILE *file){
 	Book *q;
 	q=bh->next;
 	while(q!=0){
-		
 		fprintf(file, "%i\n", q->id);
 		fputs(q->title,file);fprintf(file,"\n");
 		fputs(q->authors,file);fprintf(file,"\n");
@@ -40,9 +41,11 @@ int load_books(Book *bh, FILE *file){
 	if (file==NULL){
 		return -1;
 	}
-	char *title, *author; 
-	title=(char*)malloc(100*sizeof(char));  
-	author=(char*)malloc(120*sizeof(char));
+	char *title, *author;
+	
+	title=(char*)malloc(30*sizeof(char));  
+	author=(char*)malloc(100*sizeof(char));
+	printf("\n\ninitial_booklist working\n\n");
 	int i=0;
 	Book *q;
 	Book *p;
@@ -52,12 +55,11 @@ int load_books(Book *bh, FILE *file){
 			break;
 		}
 		p=(Book *)malloc(sizeof(Book));
-		
 		if(fscanf(file, "%i\n", &p->id)<=0){
 			break;
 		}
-		fgets(title, 101, file);
-		fgets(author, 101, file);
+		fgets(title, 30, file);
+		fgets(author, 100, file);
 		fscanf(file, "%i\n", &p->year);
 		fscanf(file, "%i\n", &p->copies);
 		fscanf(file, "%i\n", &p->totalcopies);
@@ -71,8 +73,12 @@ int load_books(Book *bh, FILE *file){
 		q=p;
 	}
 	if(bh->next==0){
+		free(title);
+		free(author);
 		return 0;
 	}
+	free(title);
+	free(author);
 	q->next=NULL; 
 	bh->last=NULL;
 	return i;
@@ -132,7 +138,7 @@ BookList *find_book_by_title (Book *bh, const char *title){
 	while(1){
 		if(!q){
 			if(blh->length==0){
-				printf("Didn't find book with title: '%s'", title);
+				
 				return blh;
 			}
 			else{
@@ -225,8 +231,6 @@ BookList *find_book_by_year (Book *bh, unsigned int year){
 int list_books(Book *bh, int length){
 	Book *q;
 	int i=0;
-	
-	
 	if(!bh->next){
 		return -1;
 	}

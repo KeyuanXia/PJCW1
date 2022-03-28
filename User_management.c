@@ -94,7 +94,7 @@ User *user_login(User *uh){
 	char *str;
 	int tl, id;
 	str=(char*)malloc(100*sizeof(char));
-	quit->type=0;
+	quit->type=-1;
 	while(1){
 		printf("Login:\n"); 
 		printf("\tusername(less than 16 characters):");
@@ -115,6 +115,7 @@ User *user_login(User *uh){
 			continue;
 		}
 		user = check_usernam(uh,str);
+		
 		if(user->type==-1){
 			printf("\n!The username has not been created before, please check your username.!\n");
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
@@ -141,6 +142,7 @@ User *user_login(User *uh){
 			printf("Please try again or enter 'quit' to back to the login and register page.\n");
 		}
 		else if(check_passwor(user, str)==1||check_passwor(user, str)==2){
+			
 			return user;
 		}
 	}
@@ -226,7 +228,9 @@ User *login_or_register(User *uh){
 		else{
 			if(strcmp(str,"1")==0){			///Login
 				user=user_login(uh);
+				
 				if(user->type==1||user->type==2){
+					
 					return user;
 				}
 			}

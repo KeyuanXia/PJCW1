@@ -116,7 +116,7 @@ int user_register_datain(User *uh, char *username, char *password){
 		}
 		q=q->next;
 	}
-	FILE *fr=fopen("Userlist.txt","w");
+	FILE *fr=fopen("./Userdata/Userlist.txt","w");
 	store_user_data(fr, uh);
 	fclose(fr);
 	printf("\n***user register successfully!***\n");
@@ -125,7 +125,7 @@ int user_register_datain(User *uh, char *username, char *password){
 
 User *check_usernam(User *uh, char *str){
 	User *q, *p=(User *)malloc(sizeof(User));
-	q=uh;
+	q=uh->next;
 	while(1){
 		if(!q){
 			p->type=-1; 
@@ -134,6 +134,7 @@ User *check_usernam(User *uh, char *str){
 		if(strcmp(q->username, str)==0){	
 			return q;
 		}
+		
 		q=q->next;
 	}
 }
@@ -156,17 +157,10 @@ int check_passwor(User *user, char *str){
 int list_users(User *uh){
 	User *q;
 	q=uh->next;
-	printf("\nid\tusername\tpassword\ttype\n");
+	printf("\nid\t\tusername\t\tpassword\t\ttype\n");
 	while(q){
-		printf("%i\t%s", q->Id, q->username);
-		if(strlen(q->username)<8)
-			printf("\t\t%s",q->password);
-		else if(strlen(q->username)>=8)
-			printf("\t%s",q->password);
-		if(strlen(q->password)<8)
-			printf("\t\t%i\n", q->type);
-		else if(strlen(q->password)>=8)
-			printf("\t%i\n",q->type);
+		printf("%-16i%-24s%-24s%-16i\n", q->Id, q->username,q->password,q->type);
+		
 		q=q->next;
 	}
 }

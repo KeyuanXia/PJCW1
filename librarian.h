@@ -8,11 +8,7 @@ int booklist_add(Book *bh, char *bookfile);
 
 int create_booklist_file(char *fileName);
 
-int find_author(Book *bh);
-
-int find_title(Book *bh);
-
-int find_year(Book *bh);
+int book_remove(Book *bh, char *filename);
 
 int librarianCLI(User *user, Book *bh, User *uh, char *filename);
 
