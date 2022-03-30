@@ -94,11 +94,13 @@ int booklist_add(Book *bh, char *bookfile){
 				printf("Your author list is too long, please try again or enter 'quit' to go back.\n");
 			}
 			else if(strcmpi(str, "quit")==0){
+				printf("\n\n****check****\n\n");
 				return -1;
 			}
 			else{
 				new_Book.authors=strdpp(str);
 				add_book(bh, new_Book);
+				
 				break;
 			}
 		}

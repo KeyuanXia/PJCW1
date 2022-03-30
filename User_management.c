@@ -1,10 +1,11 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include<io.h>
+#include<sys/io.h>
 
 #include"User_management.h" 
 #include"utility.h"
+
 
 int initial_userlist(User *h){
 	h->Id=0;

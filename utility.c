@@ -1,8 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<direct.h>
-#include<io.h>
+#include<dirent.h>
 #include <sys/stat.h>
 
 #include"User_management.h"
@@ -26,9 +25,9 @@ int check_numlen(int a){
 }
 
 void CreateFolder(const char *folderName){
-    if (_access(folderName, 0) == -1)
+    if (access(folderName, 0) == -1)
     {
-        _mkdir(folderName);
+        mkdir(folderName, S_IXOTH);
     }
 }
 
@@ -219,4 +218,16 @@ int isnum(char *s){
     for(i=0;i<strlen(s);i++){
         if(s[i]<'0'||s[i]>'9'){return 0;}}
     return 1;
+}
+
+int strcmpi(const char *src,const char *des){
+        int iChar=0;
+        while(src[iChar]!=0){
+                if(src[iChar]^des[iChar]&~32!=0){
+                        int srci=src[iChar]&~32;
+                        if(srci<('a'&~32) ||srci>('z'&~32)) break;
+                }
+                iChar++;
+        }
+        return src[iChar]-des[iChar];
 }

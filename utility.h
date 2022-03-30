@@ -32,4 +32,6 @@ int copy_book(Book *to, Book *from);
 
 int isnum(char *s);
 
+int strcmpi(const char *src,const char *des);
+
 #endif

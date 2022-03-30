@@ -1,9 +1,9 @@
 #ifndef BORROW_MANAGEMENT_GUARD__H 
 #define BORROW_MANAGEMENT_GUARD__H
 
-int remove_choosen_book(Book *bh, Book choosen_book, BookList *ubh);
+int remove_chosen_book(Book *bh, Book chosenBook, BookList *ubh);
 
-int add_borrow_book(Book *bh, Book choosen_book, BookList *ubh);
+int add_borrow_book(Book *bh, Book chosen_book, BookList *ubh);
 
 int choose_available_book(Book *abh, Book *bh, BookList *ubh);
 
