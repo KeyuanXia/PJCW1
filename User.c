@@ -7,7 +7,7 @@
 #include"User_management.h"
 #include"borrow_management.h"
 #include"search.h"
-#include"librarian.h"
+
 #include"User.h"
 
 
@@ -130,7 +130,7 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 
 
 int _return_book(Book *bh, BookList *ubh, char *filename){
-	Book choosen_book;
+	Book chosen_book;
 	char *temp=(char *)malloc(100*sizeof(char));
 	char *temp_2=(char *)malloc(100*sizeof(char));
 	char *str=(char*)malloc(100*sizeof(char));
@@ -150,12 +150,12 @@ int _return_book(Book *bh, BookList *ubh, char *filename){
 			printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
 		}
 		else{
-			choosen_book.id = atoi(str);
-			if(choosen_book.id<=0){
+			chosen_book.id = atoi(str);
+			if(chosen_book.id<=0){
 				printf("\nInvalid number!\n");
 				printf("ID must be positive.\n\n");
 			}
-			if(remove_choosen_book(bh, choosen_book, ubh)==-1){
+			if(remove_chosen_book(bh, chosen_book, ubh)==-1){
 				printf("Didn't find the book, please check the ID\n");
 			}
 			break;

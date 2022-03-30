@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
 #include"book_management.h"
 #include"utility.h"
 
@@ -35,6 +34,7 @@ int store_books(Book *bh, FILE *file){
 		fprintf(file, "%i\n", q->totalcopies);
 		q=q->next;
 	}
+    return 0;
 }
 
 int load_books(Book *bh, FILE *file){
@@ -250,10 +250,11 @@ int list_books(Book *bh, int length){
 			
 		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<=7)
 			printf("\t\t%i\t%s\n",q->year, q->authors);
-		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>7||(check_numlen(q->copies)+check_numlen(q->totalcopies))<=15)
+		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<=15)
 			printf("\t%i\t%s\n",q->year, q->authors);
 		
 		q=q->next;
 		i++;
 	}
+    return 0;
 }

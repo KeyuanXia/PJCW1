@@ -5,8 +5,6 @@
 #include"utility.h"
 #include"book_management.h"
 #include"User_management.h"
-#include"search.h"
-#include"librarian.h"
 #include"User.h"
 #include"borrow_management.h"
 
@@ -90,10 +88,11 @@ int choose_available_book(Book *abh, Book *bh, BookList *ubh){
 	}
 	
 	while(u){
-		if((b.id=u->id))
+		if(b.id==u->id)
 			remove_book(abh,b);
 		u=u->next;
 	}
+    return 0;
 }
 
 int store_user_borrow(User *user, BookList *ubh, char *filename){
