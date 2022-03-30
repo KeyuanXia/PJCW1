@@ -150,7 +150,7 @@ int create_booklist_file(char *fileName){
 }
 
 int book_remove(Book *bh, char *filename){
-	Book choosen_book;
+	Book chosen_book;
 	char *str=(char*)malloc(100*sizeof(char));
 	while(1){
 		if(bh->next==NULL){
@@ -175,14 +175,17 @@ int book_remove(Book *bh, char *filename){
 			printf("You can enter 'quit' to go back.\n");
 		}
 		else{
-			choosen_book.id = atoi(str);
-			if(choosen_book.id<=0){
+			chosen_book.id = atoi(str);
+			if(chosen_book.id<=0){
 				printf("\nInvalid number!\n");
 				printf("ID must be positive.\n\n");
 			}
-			if(remove_book(bh, choosen_book)==-1){
+			if(remove_book(bh, chosen_book)==-1){
 				printf("Didn't find the book, please check the ID\n");
 			}
+            else if(remove_book(bh, chosen_book)==-2){
+                printf("This book has been borrowed by user, please don't remove it.\n");
+            }
 			
 			break;
 		}

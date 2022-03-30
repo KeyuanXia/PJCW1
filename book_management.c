@@ -110,6 +110,9 @@ int remove_book(Book *bh, Book book){
 	q=bh;
 	while(q){
 		if(q->id==book.id){
+            if(q->copies<q->totalcopies){
+                return -2;
+            }
 			if(q->next){
 				p=q->next;
 				q->last->next=p;
