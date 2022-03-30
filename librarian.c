@@ -21,14 +21,14 @@ int booklist_add(Book *bh, char *bookfile){
 				printf("You did not enter anything yet, please try again.\n");
 			}
 			else if(strlen(str)>=24){
-				printf("Your book name is too long, please try again or enter 'quit' to go back.\n");
+				printf("Your book name is too long, please try again or enter 'q' to go back.\n");
 			}
-			else if(strcmpi(str, "quit")==0){
+			else if(strcmp(str, "q")==0){
 				return -1;
 			}
 			else{
 				if(find_book_by_title(bh, str)->length>=1){
-					printf("\nThis book is already exist, please change one or enter 'quit' to go back.\n");
+					printf("\nThis book is already exist, please change one or enter 'q' to go back.\n");
 				}
 				else{
 					new_Book.title=strdpp(str);
@@ -41,14 +41,14 @@ int booklist_add(Book *bh, char *bookfile){
 			fgets(str,91,stdin);
 			clear_n(str);
 			fflush(stdin);
-			if(strcmpi(str, "quit")==0){
+			if(strcmp(str, "q")==0){
 				return -1;
 			}
 			else if(isnum(str)==0){
 				printf("Please just enter integer number.\n");
 			}
 			else if(strlen(str)==0){
-				printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+				printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 			}
 			else if(strlen(str)>=8){
 				printf("The copies are too much.\n");
@@ -64,14 +64,14 @@ int booklist_add(Book *bh, char *bookfile){
 			fgets(str,91,stdin);
 			clear_n(str);
 			fflush(stdin);
-			if(strcmpi(str, "quit")==0){
+			if(strcmp(str, "q")==0){
 				return -1;
 			}
 			else if(isnum(str)==0){
 				printf("Please just enter integer number.\n");
 			}
 			else if(strlen(str)==0){
-				printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+				printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 			}
 			else if(strlen(str)>=5){
 				printf("The year is impossible to exist...\n");
@@ -91,9 +91,9 @@ int booklist_add(Book *bh, char *bookfile){
 				printf("You did not enter anything yet, please try again.\n");
 			}
 			else if(strlen(str)>=90){
-				printf("Your author list is too long, please try again or enter 'quit' to go back.\n");
+				printf("Your author list is too long, please try again or enter 'q' to go back.\n");
 			}
-			else if(strcmpi(str, "quit")==0){
+			else if(strcmp(str, "q")==0){
 				printf("\n\n****check****\n\n");
 				return -1;
 			}
@@ -161,18 +161,18 @@ int book_remove(Book *bh, char *filename){
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
-		if(strcmpi(str, "quit")==0){
+		if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'quit' to go back.\n");
+			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)>=5){
 			printf("The year is impossible to exist...\n");
-			printf("You can enter 'quit' to go back.\n");
+			printf("You can enter 'q' to go back.\n");
 		}
 		else{
 			chosen_book.id = atoi(str);

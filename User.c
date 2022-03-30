@@ -44,14 +44,14 @@ int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *filename){
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
-		if(strcmpi(str, "quit")==0){
+		if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'quit' to go back.\n");
+			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 		}
 		else{
 			choosen_book.id = atoi(str);
@@ -130,7 +130,7 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 
 
 int _return_book(Book *bh, BookList *ubh, char *filename){
-	Book chosen_book;
+	Book choosen_book;
 	char *temp=(char *)malloc(100*sizeof(char));
 	char *temp_2=(char *)malloc(100*sizeof(char));
 	char *str=(char*)malloc(100*sizeof(char));
@@ -140,22 +140,22 @@ int _return_book(Book *bh, BookList *ubh, char *filename){
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
-		if(strcmpi(str, "quit")==0){
+		if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'quit' to go back.\n");
+			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 		}
 		else{
-			chosen_book.id = atoi(str);
-			if(chosen_book.id<=0){
+			choosen_book.id = atoi(str);
+			if(choosen_book.id<=0){
 				printf("\nInvalid number!\n");
 				printf("ID must be positive.\n\n");
 			}
-			if(remove_chosen_book(bh, chosen_book, ubh)==-1){
+			if(remove_chosen_book(bh, choosen_book, ubh)==-1){
 				printf("Didn't find the book, please check the ID\n");
 			}
 			break;

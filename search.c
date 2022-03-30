@@ -5,7 +5,6 @@
 #include"utility.h"
 #include"book_management.h"
 #include"search.h"
-#include"librarian.h"
 
 
 int find_author(Book *bh){
@@ -20,9 +19,9 @@ int find_author(Book *bh){
 			printf("You did not enter anything yet, please try again.\n");
 		}
 		else if(strlen(str)>=90){
-			printf("Your author name is too long, please try again or enter 'quit' to go back.\n");
+			printf("Your author name is too long, please try again or enter 'q' to go back.\n");
 		}
-		else if(strcmpi(str, "quit")==0){
+		else if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else{
@@ -51,9 +50,9 @@ int find_title(Book *bh){
 			printf("\nYou did not enter anything yet, please try again.\n");
 		}
 		else if(strlen(str)>=24){
-			printf("\nYour book name is too long, please try again or enter 'quit' to go back.\n");
+			printf("\nYour book name is too long, please try again or enter 'q' to go back.\n");
 		}
-		else if(strcmpi(str, "quit")==0){
+		else if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else{
@@ -84,14 +83,14 @@ int find_year(Book *bh){
 		fgets(str,6,stdin);
 		clear_n(str);
 		fflush(stdin);
-		if(strcmpi(str, "quit")==0){
+		if(strcmp(str, "q")==0){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'quit' to go back.\n");
+			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'quit' to go back.\n");
+			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
 		}
 		else if(strlen(str)>=5){
 			printf("The year is impossible to exist...\n");

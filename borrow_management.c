@@ -10,7 +10,7 @@
 
 
 int remove_chosen_book(Book *bh, Book chosenBook, BookList *ubh){
-	Book *q, *p, *c, *b;
+	Book *q, *p, *b;
 	q=ubh->list;
 	b=bh;
 	while(q){
@@ -41,7 +41,6 @@ int remove_chosen_book(Book *bh, Book chosenBook, BookList *ubh){
 
 int add_borrow_book(Book *bh, Book chosen_book, BookList *ubh){
 	Book *q, *p, *i;
-	q=bh->next;
 	i=ubh->list;
 	while(1){
 		if(i->next==NULL){
@@ -72,9 +71,8 @@ int add_borrow_book(Book *bh, Book chosen_book, BookList *ubh){
 	}
 } 
 
-int choose_available_book(Book *abh, Book *bh, BookList *ubh){
+void choose_available_book(Book *abh, Book *bh, BookList *ubh){
 	Book *q, *p, *book, *u, b;
-	int i;
 	q=abh;
 	book=bh->next;
 	u=ubh->list->next;
@@ -92,7 +90,6 @@ int choose_available_book(Book *abh, Book *bh, BookList *ubh){
 			remove_book(abh,b);
 		u=u->next;
 	}
-    return 0;
 }
 
 int store_user_borrow(User *user, BookList *ubh, char *filename){

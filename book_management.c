@@ -45,7 +45,6 @@ int load_books(Book *bh, FILE *file){
 	
 	title=(char*)malloc(30*sizeof(char));  
 	author=(char*)malloc(100*sizeof(char));
-	printf("\n\ninitial_booklist working\n\n");
 	int i=0;
 	Book *q;
 	Book *p;
@@ -241,17 +240,21 @@ int list_books(Book *bh, int length){
 			break;
 		}
 		printf("%i\t%s", q->id, q->title);
-		if(strlen(q->title)<8)
+		if(strlen(q->title)<4)
+			printf("\t\t\t\t%i/%i",q->copies, q->totalcopies);
+		else if(strlen(q->title)>=4&&strlen(q->title)<8)
 			printf("\t\t\t%i/%i",q->copies, q->totalcopies);
-		else if(strlen(q->title)>=8&&strlen(q->title)<16)
+		else if(strlen(q->title)>=8&&strlen(q->title)<12)
 			printf("\t\t%i/%i",q->copies, q->totalcopies);
-		else if(strlen(q->title)>=16)
-			printf("\t%i/%i",q->copies, q->totalcopies);
+        else if(strlen(q->title)>=12)
+            printf("\t%i/%i",q->copies, q->totalcopies);
 			
-		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<=7)
-			printf("\t\t%i\t%s\n",q->year, q->authors);
-		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<=15)
-			printf("\t%i\t%s\n",q->year, q->authors);
+		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<3)
+			printf("\t\t\t%-4i\t\t%s\n",q->year, q->authors);
+		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=3&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<7)
+			printf("\t\t%-4i\t\t%s\n",q->year, q->authors);
+        else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<15)
+            printf("\t%-4i\t\t%s\n",q->year, q->authors);
 		
 		q=q->next;
 		i++;

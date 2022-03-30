@@ -12,7 +12,7 @@ librarian.o: librarian.c utility.h book_management.h User_management.h search.h 
 	gcc -c $<
 utility.o: utility.c User_management.h book_management.h
 	gcc -c $<
-search.o: search.c utility.h book_management.h search.h librarian.h
+search.o: search.c utility.h book_management.h search.h
 	gcc -c $<
 borrow_management.o: borrow_management.c utility.h book_management.h User_management.h User.h borrow_management.h
 	gcc -c $<

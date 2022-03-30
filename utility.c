@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include"User_management.h"
 #include"book_management.h"
@@ -20,6 +20,7 @@ int check_numlen(int a){
 	int i;
 	for(i=0;a>1;i++){
 		a=a/10;
+        if(a==1) i++;
 	}
 	return i;
 }
@@ -27,7 +28,7 @@ int check_numlen(int a){
 void CreateFolder(const char *folderName){
     if (access(folderName, 0) == -1)
     {
-        mkdir(folderName, S_IXOTH);
+        mkdir(folderName,S_IRWXO);
     }
 }
 
@@ -36,9 +37,7 @@ int store_user_data(FILE *fr, User *uh){
 		return -1;
 	}
 	User *q;
-	
 	q=uh->next;
-	
 	while(q!=0){
 		fprintf(fr, "%i\n", q->Id);
 		fputs(q->username,fr);fprintf(fr,"\n");
@@ -46,6 +45,7 @@ int store_user_data(FILE *fr, User *uh){
 		fprintf(fr, "%i\n", q->type);
 		q=q->next;
 	}
+    return 0;
 }
 
 void clear_n(char *str){
@@ -63,9 +63,8 @@ int load_user_data(FILE *fr, User *uh){
 	char *username, *password; 
 	username=(char*)malloc(100*sizeof(char));  
 	password=(char*)malloc(100*sizeof(char));
-	int i=0, d=0;
-	User *q=(User *)malloc(sizeof(User));
-	User *p;
+	int i=0, d;
+	User *q, *p;
 	q=uh;
 	while(1){
 		if(feof(fr)){
@@ -150,16 +149,14 @@ int check_passwor(User *user, char *str){
 	else{
 		return -1;
 	}
-
 }
 
 int list_users(User *uh){
 	User *q;
 	q=uh->next;
-	printf("\nid\t\tusername\t\tpassword\t\ttype\n");
+	printf("\nid\t\tusername\t\t\tpassword\t\t\ttype\n");
 	while(q){
-		printf("%-16i%-24s%-24s%-16i\n", q->Id, q->username,q->password,q->type);
-		
+		printf("%-8i%-20s%-20s%i\n", q->Id, q->username,q->password,q->type);
 		q=q->next;
 	}
 }
@@ -199,8 +196,6 @@ int copy_booklist(BookList *to, BookList *from){
 }
 
 int copy_book(Book *to, Book *from){
-	int i;
-	
 	to->id=from->id;
 	
 	to->title=strdpp(from->title);
@@ -218,16 +213,4 @@ int isnum(char *s){
     for(i=0;i<strlen(s);i++){
         if(s[i]<'0'||s[i]>'9'){return 0;}}
     return 1;
-}
-
-int strcmpi(const char *src,const char *des){
-        int iChar=0;
-        while(src[iChar]!=0){
-                if(src[iChar]^des[iChar]&~32!=0){
-                        int srci=src[iChar]&~32;
-                        if(srci<('a'&~32) ||srci>('z'&~32)) break;
-                }
-                iChar++;
-        }
-        return src[iChar]-des[iChar];
 }
