@@ -13,7 +13,7 @@ int booklist_add(Book *bh, char *bookfile){
 	Book new_Book;
 	while(1){
 		while(1){
-			printf("booktitle:");
+			printf("book title:");
 			fgets(str,91,stdin);
 			clear_n(str);
 			fflush(stdin);
@@ -99,8 +99,8 @@ int booklist_add(Book *bh, char *bookfile){
 			}
 			else{
 				new_Book.authors=strdpp(str);
+                new_Book.bookfile=strdpp(bookfile);
 				add_book(bh, new_Book);
-				
 				break;
 			}
 		}
@@ -126,7 +126,7 @@ int booklist_add(Book *bh, char *bookfile){
 					list_books(bh, -1);
 				}
 				else if(strcmp(str,"3")==0){	///Quit
-					printf("\nbookfile=%s\n\n",bookfile);
+					printf("\nbook file=%s\n",bookfile);
 					FILE *fr=fopen(bookfile, "w");
 					store_books(bh, fr);
 					fclose(fr);
@@ -202,8 +202,8 @@ int librarianCLI(User *user, Book *bh, User *uh, char *filename){
 	char *str2=(char*)malloc(100*sizeof(char));
 	while(1){
 		printf("\nPlease choose an option:\n");
-		printf("1)Show the booklist\n");
-		printf("2)Show the userlist\n");
+		printf("1)Show the book list\n");
+		printf("2)Show the user list\n");
 		printf("3)Search book\n");
 		printf("4)Add book\n");
 		printf("5)Delete book\n");

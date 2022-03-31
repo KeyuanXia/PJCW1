@@ -18,17 +18,21 @@ int main(int argc, char **argv){
 	bh->next=NULL;
 	bh->id=0;
 	if(argc!=2){
-		printf("\nexpext one booklist name entered.\n\nPrograme end.\n");
+		printf("\nexpect one book list name entered.\n\nProgram end.\n");
 		return 0;
 	}
+    else if(strlen(argv[1])>=100){
+        printf("\nThe book list name is too long, please choose one shorter than 99.\n\nProgram end.\n");
+    }
 	strcpy(filename, argv[1]);
 	while(1){
+
 		check=initial_booklist(bh, filename);
 		
 		while(1){
 			if(check==-1){
-				printf("Do you wanna create a new booklist?\n");
-				printf("1)Create a new booklist with entered name: %s\n", filename);
+				printf("Do you wanna create a new book list?\n");
+				printf("1)Create a new book list with entered name: %s\n", filename);
 				printf("2)Quit\n");
 				printf("choice:");
 				fgets(str,10,stdin);

@@ -16,7 +16,7 @@ int initial_userlist(User *h){
 		default:break;
 	}
 	fclose(fr);
-	printf("\n***Userdata insert sucessfully!***\n");
+	printf("\n***Userdata insert successfully!***\n");
 	return 1;
 }
 
@@ -232,9 +232,7 @@ User *login_or_register(User *uh){
 		else{
 			if(strcmp(str,"1")==0){			///Login
 				user=user_login(uh);
-				
 				if(user->type==1||user->type==2){
-					
 					return user;
 				}
 			}

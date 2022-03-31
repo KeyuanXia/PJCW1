@@ -22,7 +22,7 @@ int initial_user_borrow(User *user, BookList *ubh, char *filename){
 	strcat(temp,temp2);
 	
 	FILE *fr=fopen(temp,"r");
-	ubh->length=load_books(ubh->list, fr);
+	ubh->length=load_books(ubh->list, fr, filename);
 	switch(ubh->length){
 		case -1:printf("\n!!!Didn't find the user's borrow history!!!\n\n");return -1;
 		case 0:printf("\n!!!You didn't borrow any book'!!!\n");return 0;

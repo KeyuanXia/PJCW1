@@ -56,7 +56,8 @@ int add_borrow_book(Book *bh, Book chosen_book, BookList *ubh){
 					p->totalcopies=1;
 					p->year=q->year;
 					p->title=strdpp(q->title);
-					p->authors=strdpp(q->authors); 
+					p->authors=strdpp(q->authors);
+                    p->bookfile= strdpp(q->bookfile);
 					p->id=q->id;
 					i->next=p;
 					p->last=i;
@@ -84,12 +85,16 @@ void choose_available_book(Book *abh, Book *bh, BookList *ubh){
 		q=q->next;
 		book=book->next;
 	}
-	
 	while(u){
 		if(b.id==u->id)
 			remove_book(abh,b);
 		u=u->next;
 	}
+    q=abh;
+    while(q->next){
+        q=q->next;
+    }
+    q->next=NULL;
 }
 
 int store_user_borrow(User *user, BookList *ubh, char *filename){

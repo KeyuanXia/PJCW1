@@ -192,20 +192,18 @@ int copy_booklist(BookList *to, BookList *from){
 		q->copies=p->copies;
 		q->totalcopies=p->totalcopies;
 		q->year=p->year;
+        q->bookfile=p->bookfile;
 	}
 }
 
 int copy_book(Book *to, Book *from){
 	to->id=from->id;
-	
 	to->title=strdpp(from->title);
-	
 	to->authors=strdpp(from->authors);
 	to->copies=from->copies;
-	
 	to->totalcopies=from->totalcopies;
 	to->year=from->year;
-	
+    to->bookfile= strdpp(from->bookfile);
 }
 
 int isnum(char *s){

@@ -8,7 +8,7 @@
 
 
 int find_author(Book *bh){
-	char str[91];
+	char *str=(char*)malloc(100*sizeof(char));
 	BookList *bl;
 	while(1){
 		printf("Author:");
@@ -28,24 +28,28 @@ int find_author(Book *bh){
 			bl=find_book_by_author(bh, str);
 			if(bl->length!=0){
 				list_books(bl->list, bl->length);
+                free(str);
 				return 1;
 			}
 			else{
 				return 0;
 			}
-			break;
 		}
 	}
 }
 
 int find_title(Book *bh){
-	char str[30];
+
+	char *str=(char *)malloc(30*sizeof(char));
 	BookList *bl;
 	while(1){
-		printf("booktitle:");
+		printf("book title:");
+
 		fgets(str,30,stdin);
+
 		clear_n(str);
 		fflush(stdin);
+
 		if(strlen(str)==0){
 			printf("\nYou did not enter anything yet, please try again.\n");
 		}
@@ -56,20 +60,21 @@ int find_title(Book *bh){
 			return -1;
 		}
 		else{
-			
+
 			bl=find_book_by_title(bh, str);
+
 			if(bl->length==0)
 				printf("Didn't find book with title: '%s'", str);
 			if(bl->length!=0){
 				
 				list_books(bl->list, bl->length);
-				
+                free(str);
 				return 1;
 			}
 			else{
+                free(str);
 				return 0;
 			}
-			break;
 		}
 	}
 }
@@ -77,6 +82,7 @@ int find_title(Book *bh){
 int find_year(Book *bh){
 	char str[6];
 	BookList *bl;
+    Book *q;
 	int year;
 	while(1){
 		printf("Publish year:");
@@ -98,18 +104,13 @@ int find_year(Book *bh){
 		else{
 			year = atoi(str);
 			bl=find_book_by_year(bh, year);
-			
-			
-			
 			if(bl->length!=0){
 				list_books(bl->list, bl->length);
 				return 1;
 			}
 			else{
-				
 				return 0;
 			}
-			break;
 		}
 	}
 }

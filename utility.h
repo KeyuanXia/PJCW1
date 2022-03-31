@@ -30,6 +30,7 @@ int copy_booklist(BookList *to, BookList from);
 
 int copy_book(Book *to, Book *from);
 
+//used to check a string whether be a number
 int isnum(char *s);
 
 #endif
