@@ -7,15 +7,14 @@
 int initial_booklist(Book *bh, char *filename){
 	bh->id=0;
 	FILE *fr=fopen(filename,"r");
-	
-	switch(load_books(bh, fr)){
+	switch(load_books(bh, fr, filename)){
 		case -1:printf("\n!!!Didn't find the booklist.!!!\n");return -1;
 		case 0:printf("\n!!!Book list is NULL!!!\n");return 0;
 		default:break;
 	}
 	
 	fclose(fr);
-	printf("\n***Booklist insert sucessfully!***\n");
+	printf("\n***Book list insert successfully!***\n");
 	return 1;
 }
 
@@ -29,6 +28,7 @@ int store_books(Book *bh, FILE *file){
 		fprintf(file, "%i\n", q->id);
 		fputs(q->title,file);fprintf(file,"\n");
 		fputs(q->authors,file);fprintf(file,"\n");
+        fputs(q->bookfile,file);fprintf(file,"\n");
 		fprintf(file, "%i\n", q->year);
 		fprintf(file, "%i\n", q->copies);
 		fprintf(file, "%i\n", q->totalcopies);
@@ -37,14 +37,13 @@ int store_books(Book *bh, FILE *file){
     return 0;
 }
 
-int load_books(Book *bh, FILE *file){
+int load_books(Book *bh, FILE *file, char *bookfile){
 	if (file==NULL){
 		return -1;
 	}
-	char *title, *author;
-	
-	title=(char*)malloc(30*sizeof(char));  
-	author=(char*)malloc(100*sizeof(char));
+    char *title=(char*)malloc(30*sizeof(char));
+    char *author=(char*)malloc(100*sizeof(char));
+    char *bookfile_name = (char *) malloc(100 * sizeof(char));
 	int i=0;
 	Book *q;
 	Book *p;
@@ -59,17 +58,22 @@ int load_books(Book *bh, FILE *file){
 		}
 		fgets(title, 30, file);
 		fgets(author, 100, file);
+        fgets(bookfile_name, 100, file);
 		fscanf(file, "%i\n", &p->year);
 		fscanf(file, "%i\n", &p->copies);
 		fscanf(file, "%i\n", &p->totalcopies);
 		clear_n(title);
 		clear_n(author);
+        clear_n(bookfile_name);
 		p->title=strdpp(title);
 		p->authors=strdpp(author);
-		i++;
-		q->next=p;
-		p->last=q;
-		q=p;
+        p->bookfile=strdpp(bookfile_name);
+        if(strcmp(bookfile_name,bookfile)==0){
+            i++;
+            q->next = p;
+            p->last = q;
+            q = p;
+        }
 	}
 	if(bh->next==0){
 		free(title);
@@ -93,7 +97,8 @@ int add_book(Book *bh, Book book){
 			p->totalcopies=book.totalcopies;
 			p->year=book.year;
 			p->title=strdpp(book.title);
-			p->authors=strdpp(book.authors); 
+			p->authors=strdpp(book.authors);
+            p->bookfile=strdpp(book.bookfile);
 			p->id=q->id+1;
 			q->next=p;
 			p->last=q;
@@ -134,19 +139,23 @@ BookList *find_book_by_title (Book *bh, const char *title){
 	Book *q, *p, *temp;
 	BookList *blh;
 	blh=(BookList *)malloc(sizeof(BookList));
+    blh->list=(Book *)malloc(sizeof(Book));
 	p=blh->list;
 	blh->length=0;
 	q=bh->next;
 	while(1){
+
 		if(!q){
 			if(blh->length==0){
-				
+
 				return blh;
 			}
 			else{
+
 				return blh;
 			}
 		}
+        printf("\n\nTest:%i\n\n", strcmp(q->title, title));
 		if(strcmp(q->title, title)==0){
 			temp=(Book *)malloc(sizeof(Book));
 			copy_book(temp, q);
@@ -163,6 +172,7 @@ BookList *find_book_by_author (Book *bh, const char *author){
 	BookList *blh;
 	char *t; 
 	blh=(BookList *)malloc(sizeof(BookList));
+    blh->list=(Book *)malloc(sizeof(Book));
 	temp=(Book *)malloc(sizeof(Book));
 	p=blh->list;
 	blh->length=0;
@@ -181,7 +191,6 @@ BookList *find_book_by_author (Book *bh, const char *author){
 		temp->authors=strdpp(q->authors);
 		t=strtok(temp->authors, ",");
 		while(t!=NULL){
-			
 			if(strcmp(t, author)==0){
 				temp2=(Book *)malloc(sizeof(Book));
 				copy_book(temp2, q);
@@ -190,18 +199,18 @@ BookList *find_book_by_author (Book *bh, const char *author){
 				blh->length++;
 				break;
 			}
-			
 			t=strtok(NULL, ",");
 		}
-		
 		q=q->next;
 	}
+    free(temp);
 }
 
 BookList *find_book_by_year (Book *bh, unsigned int year){
 	Book *q, *p, *temp;
 	BookList *blh;
 	blh=(BookList *)malloc(sizeof(BookList));
+    blh->list=(Book *)malloc(sizeof(Book));
 	p=blh->list;
 	blh->length=0;
 	q=bh->next;
@@ -227,13 +236,13 @@ BookList *find_book_by_year (Book *bh, unsigned int year){
 	}
 }
 
-int list_books(Book *bh, int length){
+int list_books(Book *bh, unsigned int length){
 	Book *q;
 	int i=0;
 	if(!bh->next){
 		return -1;
 	}
-	printf("\nid\ttitle\t\t\tcopies\t\tYear\tauthors\n");
+	printf("\nid\ttitle\t\t\tcopies\t\tYear\t\tauthors\n");
 	q=bh->next;
 	while(q){
 		if(i==length){
