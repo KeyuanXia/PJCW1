@@ -11,18 +11,21 @@
 #include"User.h"
 
 
-int initial_user_borrow(User *user, BookList *ubh, char *filename){
+int initial_user_borrow(User *user, BookList *ubh, char *username, char *bookfile){
 	ubh->list->next=NULL;
 	ubh->list->id=0;
 	char temp[50];
 	char temp2[10];
 	strcpy(temp,"./Userdata/");
-	strcpy(temp2,".txt");
-	strcat(temp,filename);
+	strcpy(temp2,"/");
+	strcat(temp,bookfile);
 	strcat(temp,temp2);
+    strcpy(temp2,".txt");
+    strcat(temp,username);
+    strcat(temp,temp2);
 	
 	FILE *fr=fopen(temp,"r");
-	ubh->length=load_books(ubh->list, fr, filename);
+	ubh->length=load_books(ubh->list, fr, bookfile);
 	switch(ubh->length){
 		case -1:printf("\n!!!Didn't find the user's borrow history!!!\n\n");return -1;
 		case 0:printf("\n!!!You didn't borrow any book'!!!\n");return 0;
@@ -33,10 +36,8 @@ int initial_user_borrow(User *user, BookList *ubh, char *filename){
 	return 1;
 }
 
-int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *filename){
+int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *username, char *bookfile){
 	Book choosen_book;
-	char *temp=(char *)malloc(100*sizeof(char));
-	char *temp_2=(char *)malloc(100*sizeof(char));
 	char *str=(char*)malloc(100*sizeof(char));
 	while(1){
 		list_books(abh, -1);
@@ -71,16 +72,10 @@ int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *filename){
 			break;
 		}
 	}
-	strcpy(temp,"./Userdata/");
-	strcpy(temp_2,".txt");
-	strcat(temp,filename);
-	strcat(temp,temp_2);
-	FILE *fr=fopen(temp, "w");
-	store_books(ubh->list, fr);
-	fclose(fr);
+    store_user_borrow(ubh, username, bookfile);
 }
 
-int borrow_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookfile){
+int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookfile){
 	
 	char *str=(char*)malloc(100*sizeof(char));
 	Book *abh=(Book *)malloc(sizeof(Book));
@@ -103,7 +98,6 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 		else{
 			choose_available_book(abh, bh, ubh);
 			if(strcmp(str,"1")==0){
-				
 				if(list_books(abh, -1)==-1)
 					printf("\n\n***No book can be borrowed.***\n\n");
 			}
@@ -111,7 +105,7 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 				search_book(bh);
 			}
 			else if(strcmp(str,"3")==0){
-				_borrow_book(bh, ubh, abh, filename);
+				_borrow_book(bh, ubh, abh, username, bookfile);
 			}
 			else if(strcmp(str,"4")==0){
 				return 0;
@@ -215,11 +209,11 @@ int return_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 	}
 }
 
-int userCLI(User *user, Book *bh, char *filename, char *bookfile){
+int userCLI(User *user, Book *bh, char *username, char *bookfile){
 	char str[3];
 	BookList *ubh=(BookList *)malloc(sizeof(BookList));
 	ubh->list=(Book *)malloc(sizeof(Book));
-	initial_user_borrow(user, ubh, filename);
+	initial_user_borrow(user, ubh, username, bookfile);
 	while(1){
 		printf("\nPlease choose an option:\n");
 		printf("1)Show the booklist\n");
@@ -256,10 +250,10 @@ int userCLI(User *user, Book *bh, char *filename, char *bookfile){
 					printf("\n\nYou have not borrowed any book yet.\n\n");
 			}
 			else if(strcmp(str,"5")==0){
-				borrow_book(user, bh, ubh, filename, bookfile);
+				borrow_book(user, bh, ubh, username, bookfile);
 			}
 			else if(strcmp(str,"6")==0){
-				return_book(user, bh, ubh, filename, bookfile);
+				return_book(user, bh, ubh, username, bookfile);
 			}
 			else if(strcmp(str,"7")==0){
 				

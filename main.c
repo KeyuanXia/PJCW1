@@ -61,7 +61,7 @@ int main(int argc, char **argv){
 				break;
 			}
 		}
-		user=login_or_register(uh);
+		user=login_or_register(uh,filename);
 		if(user->type==1){
 			check=librarianCLI(user, bh, uh, filename);
 		}

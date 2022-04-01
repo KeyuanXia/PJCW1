@@ -20,6 +20,6 @@ User *user_login(User *uh);
 
 int user_register(User *uh);
 
-User *login_or_register(User *uh);
+User *login_or_register(User *uh, char *bookfile);
 
 #endif

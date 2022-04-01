@@ -114,9 +114,13 @@ int remove_book(Book *bh, Book book){
 	q=bh;
 	while(q){
 		if(q->id==book.id){
-            if(q->copies<q->totalcopies){
+            if(book.totalcopies==-2){
+                book.totalcopies=-2;
+            }
+            else if(q->copies<q->totalcopies){
                 return -2;
             }
+
 			if(q->next){
 				p=q->next;
 				q->last->next=p;
@@ -155,7 +159,6 @@ BookList *find_book_by_title (Book *bh, const char *title){
 				return blh;
 			}
 		}
-        printf("\n\nTest:%i\n\n", strcmp(q->title, title));
 		if(strcmp(q->title, title)==0){
 			temp=(Book *)malloc(sizeof(Book));
 			copy_book(temp, q);
@@ -242,7 +245,7 @@ int list_books(Book *bh, unsigned int length){
 	if(!bh->next){
 		return -1;
 	}
-	printf("\nid\ttitle\t\t\tcopies\t\tYear\t\tauthors\n");
+	printf("\nid\ttitle\t\t\tcopies\t\t\t\tYear\t\tauthors\n");
 	q=bh->next;
 	while(q){
 		if(i==length){
@@ -259,11 +262,11 @@ int list_books(Book *bh, unsigned int length){
             printf("\t%i/%i",q->copies, q->totalcopies);
 			
 		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<3)
-			printf("\t\t\t%-4i\t\t%s\n",q->year, q->authors);
+			printf("\t\t\t\t\t%-4i\t\t%s\n",q->year, q->authors);
 		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=3&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<7)
-			printf("\t\t%-4i\t\t%s\n",q->year, q->authors);
+			printf("\t\t\t\t%-4i\t\t%s\n",q->year, q->authors);
         else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<15)
-            printf("\t%-4i\t\t%s\n",q->year, q->authors);
+            printf("\t\t\t%-4i\t\t%s\n",q->year, q->authors);
 		
 		q=q->next;
 		i++;

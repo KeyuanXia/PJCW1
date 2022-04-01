@@ -199,16 +199,22 @@ int user_register(User *uh){
 	}
 }
 
-User *login_or_register(User *uh){
+User *login_or_register(User *uh, char *bookfile){
 	int i;
 	User *q=(User *)malloc(sizeof(User));
+    char *temp=(char *)malloc(100*sizeof(char));
+    char *temp2=(char *)malloc(100*sizeof(char));
     q->type=-1;
 	i= initial_userlist(uh);
+    initial_userlist(uh);
+    strcpy(temp,"./Userdata/");
+    strcpy(temp2,bookfile);
+    strcat(temp, temp2);
+    CreateFolder(temp);
 	if(i==0){
 		if(-1==first_register(uh)){
             return q;
         }
-		initial_userlist(uh);
 	}
 	User *user;
 	char *str=NULL;

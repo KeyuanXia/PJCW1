@@ -28,7 +28,7 @@ int check_numlen(int a){
 void CreateFolder(const char *folderName){
     if (access(folderName, 0) == -1)
     {
-        mkdir(folderName,S_IRWXO);
+        mkdir(folderName,0777);
     }
 }
 
@@ -132,7 +132,6 @@ User *check_usernam(User *uh, char *str){
 		if(strcmp(q->username, str)==0){	
 			return q;
 		}
-		
 		q=q->next;
 	}
 }
@@ -174,28 +173,6 @@ int check_length_booklist(Book *bh){
 	
 }
 
-int copy_booklist(BookList *to, BookList *from){
-	int i;
-	Book *q, *p;
-	if(from->length==0){
-		to->length=0;
-		return -1;
-	}
-	to->length=from->length;
-	to->list=from->list;
-	q=to->list->next;
-	p=from->list->next;
-	for(i=0;i<to->length;i++){
-		q->id=p->id;
-		q->title=strdpp(p->title);
-		q->authors=strdpp(p->authors);
-		q->copies=p->copies;
-		q->totalcopies=p->totalcopies;
-		q->year=p->year;
-        q->bookfile=p->bookfile;
-	}
-}
-
 int copy_book(Book *to, Book *from){
 	to->id=from->id;
 	to->title=strdpp(from->title);
@@ -204,6 +181,36 @@ int copy_book(Book *to, Book *from){
 	to->totalcopies=from->totalcopies;
 	to->year=from->year;
     to->bookfile= strdpp(from->bookfile);
+}
+
+int copy_book_to_nonpointer(Book to, Book *from){
+    to.id=from->id;
+    to.title=strdpp(from->title);
+    to.authors=strdpp(from->authors);
+    to.copies=from->copies;
+    to.totalcopies=from->totalcopies;
+    to.year=from->year;
+    to.bookfile= strdpp(from->bookfile);
+}
+
+int copy_booklist(BookList *to, BookList *from){
+    int i;
+    Book *q, *p, *temp;
+    if(from->length==0){
+        to->length=0;
+        return -1;
+    }
+    to->length=from->length;
+    to->list=from->list;
+    q=to->list;
+    p=from->list->next;
+    for(i=0;i<from->length;i++){
+        temp=(Book *)malloc(sizeof(Book));
+        copy_book(temp,p);
+        q->next=temp;
+        q=q->next;
+        p=p->next;
+    }
 }
 
 int isnum(char *s){

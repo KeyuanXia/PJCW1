@@ -73,7 +73,7 @@ int add_borrow_book(Book *bh, Book chosen_book, BookList *ubh){
 } 
 
 void choose_available_book(Book *abh, Book *bh, BookList *ubh){
-	Book *q, *p, *book, *u, b;
+	Book *q, *p, *book, *u, *b, bb;
 	q=abh;
 	book=bh->next;
 	u=ubh->list->next;
@@ -85,25 +85,35 @@ void choose_available_book(Book *abh, Book *bh, BookList *ubh){
 		q=q->next;
 		book=book->next;
 	}
+    q->next=NULL;
 	while(u){
-		if(b.id==u->id)
-			remove_book(abh,b);
+        b=abh->next;
+        while(b) {
+            bb.id=b->id;
+            bb.totalcopies=-2;
+            if (b->id == u->id){
+
+                remove_book(abh, bb);
+
+            }
+            b=b->next;
+        }
 		u=u->next;
 	}
-    q=abh;
-    while(q->next){
-        q=q->next;
-    }
-    q->next=NULL;
+
 }
 
-int store_user_borrow(User *user, BookList *ubh, char *filename){
+int store_user_borrow(BookList *ubh, char *username, char *bookfile){
 	char *temp=(char *)malloc(100*sizeof(char));
 	char *temp_2=(char *)malloc(100*sizeof(char));
-	strcpy(temp,"./Userdata/");
-	strcpy(temp_2,".txt");
-	strcat(temp,filename);
-	strcat(temp,temp_2);
+    strcpy(temp,"./Userdata/");
+    strcpy(temp_2,"/");
+    strcat(temp,bookfile);
+    strcat(temp,temp_2);
+    strcpy(temp_2,".txt");
+    strcat(temp,username);
+    strcat(temp,temp_2);
+    printf("\n\ntest:%s\n\n",temp);
 	FILE *fr=fopen(temp,"w");
 	switch(store_books(ubh->list, fr)){
 		case -1:printf("\n!!!Didn't find the user's borrow history, new one is added!!!\n\n");return -1;
