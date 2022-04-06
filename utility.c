@@ -153,9 +153,9 @@ int check_passwor(User *user, char *str){
 int list_users(User *uh){
 	User *q;
 	q=uh->next;
-	printf("\nid\t\tusername\t\t\tpassword\t\t\ttype\n");
+	printf("\nid\t\tusername\t\tpassword\t\ttype\n");
 	while(q){
-		printf("%-8i%-20s%-20s%i\n", q->Id, q->username,q->password,q->type);
+		printf("%-16i%-24s%-24s%i\n", q->Id, q->username,q->password,q->type);
 		q=q->next;
 	}
 }

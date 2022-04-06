@@ -245,28 +245,26 @@ int list_books(Book *bh, unsigned int length){
 	if(!bh->next){
 		return -1;
 	}
-	printf("\nid\ttitle\t\t\tcopies\t\t\t\tYear\t\tauthors\n");
+	printf("\nid\ttitle\t\t\tcopies\t\t\tYear\t\tauthors\n");
 	q=bh->next;
 	while(q){
 		if(i==length){
 			break;
 		}
 		printf("%i\t%s", q->id, q->title);
-		if(strlen(q->title)<4)
-			printf("\t\t\t\t%i/%i",q->copies, q->totalcopies);
-		else if(strlen(q->title)>=4&&strlen(q->title)<8)
+		if(strlen(q->title)<8)
 			printf("\t\t\t%i/%i",q->copies, q->totalcopies);
-		else if(strlen(q->title)>=8&&strlen(q->title)<12)
+		else if(strlen(q->title)>=8&&strlen(q->title)<16)
 			printf("\t\t%i/%i",q->copies, q->totalcopies);
-        else if(strlen(q->title)>=12)
-            printf("\t%i/%i",q->copies, q->totalcopies);
+                else if(strlen(q->title)>=16)
+                    printf("\t%i/%i",q->copies, q->totalcopies);
 			
-		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<3)
-			printf("\t\t\t\t\t%-4i\t\t%s\n",q->year, q->authors);
-		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=3&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<7)
-			printf("\t\t\t\t%-4i\t\t%s\n",q->year, q->authors);
-        else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<15)
-            printf("\t\t\t%-4i\t\t%s\n",q->year, q->authors);
+		if((check_numlen(q->copies)+check_numlen(q->totalcopies))<7)
+			printf("\t\t\t%-8i\t%s\n",q->year, q->authors);
+		else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=7&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<15)
+			printf("\t\t%-8i\t%s\n",q->year, q->authors);
+                else if((check_numlen(q->copies)+check_numlen(q->totalcopies))>=15&&(check_numlen(q->copies)+check_numlen(q->totalcopies))<23)
+                    printf("\t%-8i\t%s\n",q->year, q->authors);
 		
 		q=q->next;
 		i++;
