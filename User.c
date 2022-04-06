@@ -40,7 +40,10 @@ int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *username, char *bookf
 	Book choosen_book;
 	char *str=(char*)malloc(100*sizeof(char));
 	while(1){
-		list_books(abh, -1);
+		if(list_books(abh, -1)==-1){
+                        printf(("\nNo book can be borrowed\n"));
+                        return -1;
+                }
 		printf("\nPlease choose an book ID:");
 		fgets(str,91,stdin);
 		clear_n(str);
@@ -102,7 +105,8 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookf
 					printf("\n\n***No book can be borrowed.***\n\n");
 			}
 			else if(strcmp(str,"2")==0){
-				search_book(bh);
+                                if(search_book(bh)==-1)
+                                        printf("\n\nThe library is empty.\n\n");
 			}
 			else if(strcmp(str,"3")==0){
 				_borrow_book(bh, ubh, abh, username, bookfile);
@@ -235,7 +239,9 @@ int userCLI(User *user, Book *bh, char *username, char *bookfile){
 		}
 		else{
 			if(strcmp(str,"1")==0){
-				list_books(bh, -1);
+				if(list_books(bh, -1)){
+                                        printf("\nThe library has not book yet, please let librarian add book first\n\n");
+                                }
 			}
 			else if(strcmp(str,"2")==0){
 				if(list_books(ubh->list, -1)==-1)

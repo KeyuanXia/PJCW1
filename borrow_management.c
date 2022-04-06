@@ -113,7 +113,6 @@ int store_user_borrow(BookList *ubh, char *username, char *bookfile){
     strcpy(temp_2,".txt");
     strcat(temp,username);
     strcat(temp,temp_2);
-    printf("\n\ntest:%s\n\n",temp);
 	FILE *fr=fopen(temp,"w");
 	switch(store_books(ubh->list, fr)){
 		case -1:printf("\n!!!Didn't find the user's borrow history, new one is added!!!\n\n");return -1;
