@@ -236,7 +236,6 @@ User *login_or_register(User *uh, char *bookfile){
 		printf("1) Login\n");
 		printf("2) Register an account\n");
 		printf("3) quit\n");
-		printf("4) List users\n");
         printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,10,stdin);
@@ -261,9 +260,6 @@ User *login_or_register(User *uh, char *bookfile){
 			}
 			else if(strcmp(str,"3")==0){	///quit
 				return q;
-			}
-			else if(strcmp(str,"4")==0){
-				list_users(uh);
 			}
 			else{
 				printf("\n!!!Invalid choose.!!!\n");
