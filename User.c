@@ -41,7 +41,7 @@ int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *username, char *bookf
 	char *str=(char*)malloc(100*sizeof(char));
 	while(1){
 		if(list_books(abh, -1)==-1){
-                        printf(("\nNo book can be borrowed\n"));
+                        printf(("\n!!!No book can be borrowed!!!\n"));
                         return -1;
                 }
 		printf("\nPlease choose an book ID:");
@@ -52,25 +52,25 @@ int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *username, char *bookf
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
+			printf("_____Please just enter integer number, you can try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+			printf("_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 		}
 		else{
 			choosen_book.id = atoi(str);
 			if(choosen_book.id<=0){
-				printf("\nInvalid number!\n");
-				printf("ID must be positive.\n\n");
+				printf("\n!!!Invalid number!!!\n");
+				printf("!!!ID must be positive.!!!\n\n");
 			}
 			else if(find_book_by_id(ubh->list, choosen_book.id)==1){
-				printf("You have already borrowed this book yet.\n");
+				printf("_____You have already borrowed this book yet._____\n");
 			}
 			else if(find_book_by_id(bh, choosen_book.id)==2){
-				printf("This book does not left any more..\n");
+				printf("_____This book does not left any more.._____\n");
 			}
 			else if(add_borrow_book(bh, choosen_book, ubh)==-1){
-				printf("Didn't find the book, please check the ID\n");
+				printf("_____Didn't find the book, please check the ID_____\n");
 			}
 			break;
 		}

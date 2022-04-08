@@ -3,10 +3,12 @@
 
 int initial_user_borrow(User *user, BookList *ubh, char *username, char *bookfile);
 
+//a CLI for borrow_book
 int _borrow_book(Book *bh, BookList *ubh, Book *abh, char *username, char *bookfile);
 
 int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookfile);
 
+//a CLI for return_book
 int _return_book(Book *bh, BookList *ubh, char *filename);
 
 int return_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookfile);
