@@ -83,20 +83,22 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookf
 	char *str=(char*)malloc(100*sizeof(char));
 	Book *abh=(Book *)malloc(sizeof(Book));
 	while(1){
+        printf("\n***********************************************************************\n");
 		printf("\nPlease choose an option\n");
 		printf("1)Show the available booklist\n");
 		printf("2)Search book\n");
 		printf("3)Borrow book(Just accept ID)\n");
 		printf("4)quit\n");
+        printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
 		if(strlen(str)==0){
-			printf("You has not choose yet, please try again.\n");
+			printf("\n_____You has not choose yet, please try again._____\n");
 		}
 		else if(strlen(str)>1){
-			printf("Your choice is too long, please try again.\n");
+			printf("\n_____Your choice is too long, please try again._____\n");
 		}
 		else{
 			choose_available_book(abh, bh, ubh);
@@ -106,7 +108,7 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookf
 			}
 			else if(strcmp(str,"2")==0){
                                 if(search_book(bh)==-1)
-                                        printf("\n\nThe library is empty.\n\n");
+                                        printf("\n\n!!!The library is empty.!!!\n\n");
 			}
 			else if(strcmp(str,"3")==0){
 				_borrow_book(bh, ubh, abh, username, bookfile);
@@ -115,7 +117,7 @@ int borrow_book(User *user, Book *bh, BookList *ubh, char *username, char *bookf
 				return 0;
 			}
 			else{
-				printf("Invalid choice.\n");
+				printf("!!!Invalid choice.!!!\n");
 			}
 			FILE *fr=fopen(bookfile, "w");
 			store_books(bh, fr);
@@ -142,19 +144,19 @@ int _return_book(Book *bh, BookList *ubh, char *filename){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
+			printf("\n_____Please just enter integer number, you can try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+			printf("_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 		}
 		else{
 			choosen_book.id = atoi(str);
 			if(choosen_book.id<=0){
-				printf("\nInvalid number!\n");
-				printf("ID must be positive.\n\n");
+				printf("\n!!!Invalid number!!!\n");
+				printf("!!!ID must be positive.!!!\n\n");
 			}
 			if(remove_chosen_book(bh, choosen_book, ubh)==-1){
-				printf("Didn't find the book, please check the ID\n");
+				printf("!!!Didn't find the book, please check the ID!!!\n");
 			}
 			break;
 		}
@@ -172,23 +174,25 @@ int return_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 	char *str=(char*)malloc(100*sizeof(char));
 	while(1){
 		if(ubh->list->next==NULL){
-			printf("\n\n!!!You have not borrow any book yet.\n\n");
+			printf("\n\n!!!You have not borrow any book yet.!!!\n\n");
 			return 0;
 		}
-		printf("\nPlease choose an option\n");
+        printf("\n***********************************************************************\n");
+		printf("Please choose an option\n");
 		printf("1)Show the borrowed booklist\n");
 		printf("2)Search book\n");
 		printf("3)return book(Just accept ID)\n");
 		printf("4)quit\n");
+        printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
 		if(strlen(str)==0){
-			printf("You has not choose yet, please try again.\n");
+			printf("_____You has not choose yet, please try again._____\n");
 		}
 		else if(strlen(str)>1){
-			printf("Your choice is too long, please try again.\n");
+			printf("_____Your choice is too long, please try again._____\n");
 		}
 		else{
 			if(strcmp(str,"1")==0){
@@ -204,7 +208,7 @@ int return_book(User *user, Book *bh, BookList *ubh, char *filename, char *bookf
 				return 0;
 			}
 			else{
-				printf("Invalid choice.\n");
+				printf("\n!!!Invalid choice.!!!\n");
 			}
 		}
 		FILE *fr=fopen(bookfile, "w");
@@ -219,6 +223,7 @@ int userCLI(User *user, Book *bh, char *username, char *bookfile){
 	ubh->list=(Book *)malloc(sizeof(Book));
 	initial_user_borrow(user, ubh, username, bookfile);
 	while(1){
+        printf("\n***********************************************************************\n");
 		printf("\nPlease choose an option:\n");
 		printf("1)Show the booklist\n");
 		printf("2)Show the borrowed book\n");
@@ -227,33 +232,34 @@ int userCLI(User *user, Book *bh, char *username, char *bookfile){
 		printf("5)Borrow book\n");
 		printf("6)Return book\n");
 		printf("7)quit\n");
+        printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,3,stdin);
 		clear_n(str);
 		fflush(stdin);
 		if(strlen(str)==0){
-			printf("You has not choose yet, please try again.\n");
+			printf("_____You has not choose yet, please try again._____\n");
 		}
 		else if(strlen(str)>1){
-			printf("Your choice is too long, please try again.\n");
+			printf("_____Your choice is too long, please try again._____\n");
 		}
 		else{
 			if(strcmp(str,"1")==0){
 				if(list_books(bh, -1)){
-                                        printf("\nThe library has not book yet, please let librarian add book first\n\n");
-                                }
+                    printf("\n!!!The library has not book yet, please let librarian add book first!!!\n\n");
+                }
 			}
 			else if(strcmp(str,"2")==0){
 				if(list_books(ubh->list, -1)==-1)
-					printf("\nYou have not borrow any book yet.\n\n");
+					printf("\n!!!You have not borrow any book yet.!!!\n\n");
 			}
 			else if(strcmp(str,"3")==0){
 				if(search_book(bh)==-1)
-					printf("\n\nThe library is empty.\n\n");
+					printf("\n\n!!!The library is empty.!!!\n\n");
 			}
 			else if(strcmp(str,"4")==0){
 				if(search_book(ubh->list)==-1)
-					printf("\n\nYou have not borrowed any book yet.\n\n");
+					printf("\n\n!!!You have not borrowed any book yet.!!!\n\n");
 			}
 			else if(strcmp(str,"5")==0){
 				borrow_book(user, bh, ubh, username, bookfile);
@@ -266,7 +272,7 @@ int userCLI(User *user, Book *bh, char *username, char *bookfile){
 				return 0;
 			}
 			else{
-				printf("Invalid choice.\n");
+				printf("\n!!!Invalid choice.!!!\n");
 			}
 		}
 	}

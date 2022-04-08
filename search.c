@@ -16,10 +16,10 @@ int find_author(Book *bh){
 		clear_n(str);
 		fflush(stdin);
 		if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again.\n");
+			printf("\n_____You did not enter anything yet, please try again._____\n");
 		}
 		else if(strlen(str)>=90){
-			printf("Your author name is too long, please try again or enter 'q' to go back.\n");
+			printf("\n_____Your author name is too long, please try again or enter 'q' to go back._____\n");
 		}
 		else if(strcmp(str, "q")==0){
 			return -1;
@@ -51,10 +51,10 @@ int find_title(Book *bh){
 		fflush(stdin);
 
 		if(strlen(str)==0){
-			printf("\nYou did not enter anything yet, please try again.\n");
+			printf("\n_____You did not enter anything yet, please try again._____\n");
 		}
 		else if(strlen(str)>=24){
-			printf("\nYour book name is too long, please try again or enter 'q' to go back.\n");
+			printf("\n_____Your book name is too long, please try again or enter 'q' to go back._____\n");
 		}
 		else if(strcmp(str, "q")==0){
 			return -1;
@@ -64,7 +64,7 @@ int find_title(Book *bh){
 			bl=find_book_by_title(bh, str);
 
 			if(bl->length==0)
-				printf("Didn't find book with title: '%s'", str);
+				printf("\n>>>>>Didn't find book with title: '%s'\n", str);
 			if(bl->length!=0){
 				
 				list_books(bl->list, bl->length);
@@ -93,13 +93,13 @@ int find_year(Book *bh){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
+			printf("\n_____Please just enter integer number, you can try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+			printf("\n_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)>=5){
-			printf("The year is impossible to exist...\n");
+			printf("\nThe year is impossible to exist...\n");
 		}
 		else{
 			year = atoi(str);
@@ -121,20 +121,23 @@ int search_book(Book *bh){
 		if(bh->next==NULL){
 			return -1;
 		}
-		printf("\nPlease choose an option:\n");
+        printf("\n***********************************************************************\n");
+		printf("Please choose an option:\n");
 		printf("1)Search book by title\n");
 		printf("2)Search book by author\n");
 		printf("3)Search book by year\n");
 		printf("4)quit\n");
+        printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,9,stdin);
 		clear_n(str);
 		fflush(stdin);
+        printf("\n");
 		if(strlen(str)==0){
-			printf("You has not choose yet, please try again.\n");
+			printf("\n_____You has not choose yet, please try again._____\n");
 		}
 		else if(strlen(str)>1){
-			printf("Your choice is too long, please try again.\n");
+			printf("\n_____Your choice is too long, please try again._____\n");
 		}
 		else{
 			if(strcmp(str,"1")==0){
@@ -150,7 +153,7 @@ int search_book(Book *bh){
 				return 0;
 			}
 			else{
-				printf("Invalid choice.\n");
+				printf("\n!!!Invalid choice.!!!\n");
 			}
 		}
 	}

@@ -13,7 +13,7 @@ int booklist_add(Book *bh, char *bookfile){
 	Book new_Book;
 	while(1){
 		while(1){
-			printf("book title:");
+			printf("\nbook title:");
 			fgets(str,91,stdin);
 			clear_n(str);
 			fflush(stdin);
@@ -45,13 +45,13 @@ int booklist_add(Book *bh, char *bookfile){
 				return -1;
 			}
 			else if(isnum(str)==0){
-				printf("Please just enter integer number.\n");
+				printf("_____Please just enter integer number._____\n");
 			}
 			else if(strlen(str)==0){
-				printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+				printf("_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 			}
 			else if(strlen(str)>=8){
-				printf("The copies are too much.\n");
+				printf("_____The copies are too much._____\n");
 			}
 			else{
 				new_Book.copies=atoi(str);
@@ -68,10 +68,10 @@ int booklist_add(Book *bh, char *bookfile){
 				return -1;
 			}
 			else if(isnum(str)==0){
-				printf("Please just enter integer number.\n");
+				printf("_____Please just enter integer number._____\n");
 			}
 			else if(strlen(str)==0){
-				printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+				printf("_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 			}
 			else if(strlen(str)>=5){
 				printf("The year is impossible to exist...\n");
@@ -88,13 +88,12 @@ int booklist_add(Book *bh, char *bookfile){
 			clear_n(str);
 			fflush(stdin);
 			if(strlen(str)==0){
-				printf("You did not enter anything yet, please try again.\n");
+				printf("\n_____You did not enter anything yet, please try again._____\n");
 			}
 			else if(strlen(str)>=90){
-				printf("Your author list is too long, please try again or enter 'q' to go back.\n");
+				printf("\n_____Your author list is too long, please try again or enter 'q' to go back._____\n");
 			}
 			else if(strcmp(str, "q")==0){
-				printf("\n\n****check****\n\n");
 				return -1;
 			}
 			else{
@@ -105,18 +104,21 @@ int booklist_add(Book *bh, char *bookfile){
 			}
 		}
 		while(1){
+            printf("\n***********************************************************************\n");
 			printf("1) Continue to add book\n");
 			printf("2) Show the book list\n");
 			printf("3) Quit\n");
+            printf("***********************************************************************\n");
 			printf("choice:");
 			fgets(str,10,stdin);
 			clear_n(str);
 			fflush(stdin);
+
 			if(strlen(str)==0){
-				printf("You has not choose yet, please try again.\n");
+				printf("_____You has not choose yet, please try again._____\n");
 			}
 			else if(strlen(str)>1){
-				printf("Your choice is too long, please try again.\n");
+				printf("_____Your choice is too long, please try again._____\n");
 			}
 			else{
 				if(strcmp(str,"1")==0){
@@ -126,14 +128,14 @@ int booklist_add(Book *bh, char *bookfile){
 					list_books(bh, -1);
 				}
 				else if(strcmp(str,"3")==0){	///Quit
-					printf("\nbook file=%s\n",bookfile);
+					printf("\n>>>>>book file=%s\n",bookfile);
 					FILE *fr=fopen(bookfile, "w");
 					store_books(bh, fr);
 					fclose(fr);
 					return -1;
 				}
 				else{
-					printf("\ninvalid choose.\n");
+					printf("\n!!!Invalid choose.!!!\n");
 				}
 			}
 		}
@@ -165,26 +167,26 @@ int book_remove(Book *bh, char *filename){
 			return -1;
 		}
 		else if(isnum(str)==0){
-			printf("Please just enter integer number, you can try again or enter 'q' to go back.\n");
+			printf("\n_____Please just enter integer number, you can try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)==0){
-			printf("You did not enter anything yet, please try again or enter 'q' to go back.\n");
+			printf("\n_____You did not enter anything yet, please try again or enter 'q' to go back._____\n");
 		}
 		else if(strlen(str)>=5){
 			printf("The year is impossible to exist...\n");
-			printf("You can enter 'q' to go back.\n");
+			printf("_____You can enter 'q' to go back._____\n");
 		}
 		else{
 			chosen_book.id = atoi(str);
 			if(chosen_book.id<=0){
-				printf("\nInvalid number!\n");
-				printf("ID must be positive.\n\n");
+				printf("\n!!!Invalid number!!!\n");
+				printf("\n!!!ID must be positive.!!!\n");
 			}
 			if(remove_book(bh, chosen_book)==-1){
-				printf("Didn't find the book, please check the ID\n");
+				printf("\n!!!Didn't find the book, please check the ID!!!\n");
 			}
             else if(remove_book(bh, chosen_book)==-2){
-                printf("This book has been borrowed by user, please don't remove it.\n");
+                printf("\n!!!This book has been borrowed by user, please don't remove it.!!!\n");
             }
 			
 			break;
@@ -201,27 +203,30 @@ int librarianCLI(User *user, Book *bh, User *uh, char *filename){
 	char *str=(char*)malloc(100*sizeof(char));
 	char *str2=(char*)malloc(100*sizeof(char));
 	while(1){
-		printf("\nPlease choose an option:\n");
+        printf("\n***********************************************************************\n");
+		printf("Please choose an option:\n");
 		printf("1)Show the book list\n");
 		printf("2)Show the user list\n");
 		printf("3)Search book\n");
 		printf("4)Add book\n");
 		printf("5)Delete book\n");
 		printf("6)quit\n");
+        printf("***********************************************************************\n");
 		printf("choice:");
 		fgets(str,91,stdin);
 		clear_n(str);
 		fflush(stdin);
+
 		if(strlen(str)==0){
-			printf("You has not choose yet, please try again.\n");
+			printf("\n_____You has not choose yet, please try again._____\n");
 		}
 		else if(strlen(str)>1){
-			printf("Your choice is too long, please try again.\n");
+			printf("\n_____Your choice is too long, please try again._____\n");
 		}
 		else{
 			if(strcmp(str,"1")==0){
 				if(list_books(bh, -1)==-1){
-					printf("\n\nNo book in the library yet, please add some first.\n\n");
+					printf("\n\n!!!No book in the library yet, please add some first.!!!\n\n");
 				}
 			}
 			else if(strcmp(str,"2")==0){
@@ -241,7 +246,7 @@ int librarianCLI(User *user, Book *bh, User *uh, char *filename){
 				return 0;
 			}
 			else{
-				printf("Invalid choice.\n");
+				printf("\n!!!Invalid choice.!!!\n");
 			}
 		}
 	}

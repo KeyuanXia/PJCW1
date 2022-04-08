@@ -153,11 +153,13 @@ int check_passwor(User *user, char *str){
 int list_users(User *uh){
 	User *q;
 	q=uh->next;
+        printf("\n------------------------------------------------------------------------------------------------\n");
 	printf("\nid\t\tusername\t\tpassword\t\ttype\n");
 	while(q){
 		printf("%-16i%-24s%-24s%i\n", q->Id, q->username,q->password,q->type);
 		q=q->next;
 	}
+        printf("\n------------------------------------------------------------------------------------------------\n");
 }
 
 int check_length_booklist(Book *bh){

@@ -183,7 +183,7 @@ BookList *find_book_by_author (Book *bh, const char *author){
 	while(1){
 		if(!q){
 			if(blh->length==0){
-				printf("\nDidn't find book with author: '%s'\n", author);
+				printf("\n>>>>>Didn't find book with author: '%s'\n", author);
 				return blh;
 			}
 			else{
@@ -220,7 +220,7 @@ BookList *find_book_by_year (Book *bh, unsigned int year){
 	while(1){
 		if(!q){
 			if(blh->length==0){
-				printf("\nDidn't find book published at %i\n", year);
+				printf("\n>>>>>Didn't find book published at %i\n", year);
 				
 				return blh;
 			}
@@ -245,6 +245,7 @@ int list_books(Book *bh, unsigned int length){
 	if(!bh->next){
 		return -1;
 	}
+    printf("\n---------------------------------------------------------------------------------------------------------------------------------------------=\n");
 	printf("\nid\ttitle\t\t\tcopies\t\t\tYear\t\tauthors\n");
 	q=bh->next;
 	while(q){
@@ -269,5 +270,6 @@ int list_books(Book *bh, unsigned int length){
 		q=q->next;
 		i++;
 	}
+    printf("\n---------------------------------------------------------------------------------------------------------------------------------------------=\n");
     return 0;
 }
