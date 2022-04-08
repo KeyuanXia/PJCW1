@@ -218,7 +218,6 @@ User *login_or_register(User *uh, char *bookfile){
     char *temp2=(char *)malloc(100*sizeof(char));
     q->type=-1;
     i= initial_userlist(uh);
-    initial_userlist(uh);
     strcpy(temp,"./Userdata/");
     strcpy(temp2,bookfile);
     strcat(temp, temp2);
